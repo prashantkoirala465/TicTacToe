@@ -26,7 +26,7 @@ export function useOnlineGame({
   const [status, setStatus] = useState<OnlineStatus>('connecting');
 
   useEffect(() => {
-    if (!roomCode) return;
+    if (!supabase || !roomCode) return;
 
     const channel = supabase.channel(`room:${roomCode}`, {
       config: {

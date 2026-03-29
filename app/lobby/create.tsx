@@ -20,6 +20,10 @@ export default function CreateRoomScreen() {
   }, []);
 
   const createRoom = async (retries = 0) => {
+    if (!supabase) {
+      setError('Online mode not configured.');
+      return;
+    }
     if (retries >= 5) {
       setError('Failed to create room. Try again.');
       return;

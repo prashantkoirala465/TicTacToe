@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, View, Text, StyleSheet } from 'react-native';
+import { Pressable, View, Text, StyleSheet, ViewStyle } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -18,6 +18,7 @@ interface ModeCardProps {
   subtitle: string;
   onPress: () => void;
   delay: number;
+  style?: ViewStyle;
 }
 
 export function ModeCard({
@@ -27,6 +28,7 @@ export function ModeCard({
   subtitle,
   onPress,
   delay,
+  style,
 }: ModeCardProps) {
   const scale = useSharedValue(1);
 
@@ -35,7 +37,7 @@ export function ModeCard({
   }));
 
   return (
-    <Animated.View entering={FadeInDown.delay(delay).springify().damping(14)}>
+    <Animated.View entering={FadeInDown.delay(delay).springify().damping(14)} style={style}>
       <AnimatedPressable
         style={[styles.card, animatedStyle]}
         onPressIn={() => {

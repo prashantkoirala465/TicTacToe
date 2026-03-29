@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ModeCard } from '../src/components/ModeCard';
 import { useGameStore } from '../src/store/game-store';
 import { colors, spacing, typography, radii } from '../src/constants/theme';
+import { isSupabaseConfigured } from '../src/lib/supabase';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -63,25 +64,43 @@ export default function HomeScreen() {
             icon="🌐"
             iconBgColor={colors.onlineIconBg}
             title="Create Game"
-            subtitle="Host a room for a friend"
-            onPress={() => {
-              setMode('online');
-              resetScores();
-              router.push('/lobby/create');
-            }}
+            subtitle={isSupabaseConfigured ? 'Host a room for a friend' : 'Requires online setup'}
+            onPress={
+              isSupabaseConfigured
+                ? () => {
+                    setMode('online');
+                    resetScores();
+                    router.push('/lobby/create');
+                  }
+                : () =>
+                    Alert.alert(
+                      'Online Mode',
+                      'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
+                    )
+            }
             delay={160}
+            style={isSupabaseConfigured ? undefined : { opacity: 0.4 }}
           />
           <ModeCard
             icon="🔗"
             iconBgColor={colors.onlineIconBg}
             title="Join Game"
-            subtitle="Enter a room code"
-            onPress={() => {
-              setMode('online');
-              resetScores();
-              router.push('/lobby/join');
-            }}
+            subtitle={isSupabaseConfigured ? 'Enter a room code' : 'Requires online setup'}
+            onPress={
+              isSupabaseConfigured
+                ? () => {
+                    setMode('online');
+                    resetScores();
+                    router.push('/lobby/join');
+                  }
+                : () =>
+                    Alert.alert(
+                      'Online Mode',
+                      'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
+                    )
+            }
             delay={240}
+            style={isSupabaseConfigured ? undefined : { opacity: 0.4 }}
           />
         </View>
       </View>

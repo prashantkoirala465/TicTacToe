@@ -17,6 +17,10 @@ export default function JoinRoomScreen() {
   const [joining, setJoining] = useState(false);
 
   const handleJoin = async (roomCode: string) => {
+    if (!supabase) {
+      setError('Online mode not configured.');
+      return;
+    }
     setJoining(true);
     setError('');
 
