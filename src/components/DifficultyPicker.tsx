@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: '#130d3a',
+    backgroundColor: '#0a1520',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   option: {
-    backgroundColor: 'rgba(58, 39, 140, 0.35)',
+    backgroundColor: 'rgba(12, 30, 54, 0.35)',
     borderRadius: 14,
     padding: 18,
     flexDirection: 'row',

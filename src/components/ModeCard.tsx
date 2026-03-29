@@ -70,7 +70,7 @@ export function ModeCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'rgba(58, 39, 140, 0.3)',
+    backgroundColor: 'rgba(12, 30, 54, 0.3)',
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 18,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
     borderWidth: 1,
-    borderColor: 'rgba(123, 107, 196, 0.15)',
+    borderColor: 'rgba(74, 106, 138, 0.15)',
     overflow: 'hidden',
   },
   accent: {

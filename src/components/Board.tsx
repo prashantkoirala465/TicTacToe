@@ -40,15 +40,15 @@ export function Board({ board, onCellPress, disabled }: BoardProps) {
 
 const styles = StyleSheet.create({
   board: {
-    // Reference: background rgba(58,39,140,0.4), border-radius 16px, backdrop-filter blur(12px)
-    backgroundColor: "rgba(58, 39, 140, 0.35)",
+    // Reference: background rgba(12,30,54,0.4), border-radius 16px, backdrop-filter blur(12px)
+    backgroundColor: "rgba(12, 30, 54, 0.35)",
     borderRadius: 16,
     padding: PADDING,
     flexDirection: "row",
     flexWrap: "wrap",
     gap: GAP,
     // Glow
-    shadowColor: "#3A278C",
+    shadowColor: "#0a1e36",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
     shadowRadius: 24,

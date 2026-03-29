@@ -2,9 +2,9 @@ export const colors = {
   // Backgrounds
   bgDark: '#000000',
   bgPurple: '#3A278C',
-  bgCard: 'rgba(58, 39, 140, 0.4)',
+  bgCard: 'rgba(12, 30, 54, 0.4)',
   bgCardBorder: 'rgba(171, 172, 185, 0.3)',
-  bgCell: 'rgba(58, 39, 140, 0.35)',
+  bgCell: 'rgba(12, 30, 54, 0.35)',
   bgCellBorder: '#ABACB9',
 
   // Marks

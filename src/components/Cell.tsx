@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(58, 39, 140, 0.3)',
+    backgroundColor: 'rgba(12, 30, 54, 0.3)',
     overflow: 'hidden',
   },
   innerGlow: {
