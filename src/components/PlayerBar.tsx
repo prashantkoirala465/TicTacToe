@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   name: {
-    fontFamily: 'TitilliumWeb-Bold',
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 13,
     color: '#FEFDFB',
   },
   score: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 22,
   },
   center: {
@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   vs: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 11,
     color: 'rgba(171, 172, 185, 0.35)',
     letterSpacing: 2,
   },
   turnText: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 16,
     letterSpacing: 2,
     textAlign: 'center',

@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   value: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 26,
     textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   label: {
-    fontFamily: 'TitilliumWeb-Bold',
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 9,
     letterSpacing: 1.5,
     color: 'rgba(171, 172, 185, 0.4)',

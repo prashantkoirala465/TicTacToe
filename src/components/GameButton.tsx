@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
   primaryText: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 16,
     color: '#FEFDFB',
     letterSpacing: 1.5,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     transform: [{ skewX: '-3deg' }],
   },
   secondaryText: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 16,
     color: '#080206',
     letterSpacing: 1,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ghostText: {
-    fontFamily: 'TitilliumWeb-Bold',
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 14,
     color: 'rgba(171, 172, 185, 0.6)',
     letterSpacing: 1,

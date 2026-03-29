@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderColor: colors.xPrimary,
   },
   char: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 24,
     color: '#FEFDFB',
     textAlign: 'center',

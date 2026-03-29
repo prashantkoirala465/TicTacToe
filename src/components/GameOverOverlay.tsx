@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   label: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 13,
     letterSpacing: 4,
     marginBottom: 4,
   },
   name: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 24,
     color: '#FEFDFB',
     marginBottom: 24,

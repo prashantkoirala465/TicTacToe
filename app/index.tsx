@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   appName: {
-    fontFamily: 'TitilliumWeb-Black',
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 44,
     color: '#FEFDFB',
     letterSpacing: 6,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(123, 107, 196, 0.4)',
   },
   subtitle: {
-    fontFamily: 'TitilliumWeb-SemiBold',
+    fontFamily: 'TitilliumWeb_600SemiBold',
     fontSize: 10,
     color: 'rgba(171, 172, 185, 0.5)',
     letterSpacing: 4,

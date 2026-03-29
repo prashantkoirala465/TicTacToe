@@ -106,12 +106,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: 'TitilliumWeb-Bold',
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 16,
     color: '#FEFDFB',
   },
   subtitle: {
-    fontFamily: 'TitilliumWeb-Regular',
+    fontFamily: 'TitilliumWeb_400Regular',
     fontSize: 12,
     color: 'rgba(171, 172, 185, 0.6)',
     marginTop: 1,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   arrow: {
-    fontFamily: 'TitilliumWeb-Bold',
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 16,
     marginTop: -1,
   },
