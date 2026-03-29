@@ -26,8 +26,8 @@ interface WinLineProps {
   winner?: 'X' | 'O' | null;
 }
 
-const GAP = 8;
-const PADDING = 16;
+const GAP = 12;
+const PADDING = 28;
 const LINE_LENGTH = 500;
 
 export function WinLine({ line, boardSize, winner }: WinLineProps) {

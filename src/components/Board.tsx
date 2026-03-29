@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Cell } from './Cell';
-import { colors } from '../constants/theme';
-import type { Board as BoardType } from '../utils/game-engine';
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { Cell } from "./Cell";
+import type { Board as BoardType } from "../utils/game-engine";
 
 interface BoardProps {
   board: BoardType;
@@ -10,54 +9,49 @@ interface BoardProps {
   disabled: boolean;
 }
 
-const GAP = 8;
-const BOARD_PADDING = 16;
+// Exact reference values: padding 32px, grid-gap 12px
+const GAP = 12;
+const PADDING = 28;
 
 export function Board({ board, onCellPress, disabled }: BoardProps) {
   const [cellSize, setCellSize] = useState(0);
 
   const handleLayout = (e: { nativeEvent: { layout: { width: number } } }) => {
-    const width = e.nativeEvent.layout.width;
-    const innerWidth = width - BOARD_PADDING * 2;
-    const size = Math.floor((innerWidth - GAP * 2) / 3);
-    setCellSize(size);
+    const w = e.nativeEvent.layout.width;
+    const inner = w - PADDING * 2;
+    setCellSize(Math.floor((inner - GAP * 2) / 3));
   };
 
   return (
-    <View style={styles.boardOuter}>
-      <View style={styles.boardInner} onLayout={handleLayout}>
-        {cellSize > 0 &&
-          board.map((cell, index) => (
-            <Cell
-              key={index}
-              value={cell}
-              onPress={() => onCellPress(index)}
-              disabled={disabled}
-              size={cellSize}
-            />
-          ))}
-      </View>
+    <View style={styles.board} onLayout={handleLayout}>
+      {cellSize > 0 &&
+        board.map((cell, i) => (
+          <Cell
+            key={i}
+            value={cell}
+            onPress={() => onCellPress(i)}
+            disabled={disabled}
+            size={cellSize}
+          />
+        ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  boardOuter: {
-    backgroundColor: 'rgba(58, 39, 140, 0.45)',
+  board: {
+    // Reference: background rgba(58,39,140,0.4), border-radius 16px, backdrop-filter blur(12px)
+    backgroundColor: "rgba(58, 39, 140, 0.35)",
     borderRadius: 16,
-    borderWidth: 1.5,
-    borderColor: 'rgba(171, 172, 185, 0.25)',
-    padding: BOARD_PADDING,
-    // Subtle outer glow
-    shadowColor: '#3A278C',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 30,
-    elevation: 10,
-  },
-  boardInner: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    padding: PADDING,
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: GAP,
+    // Glow
+    shadowColor: "#3A278C",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 24,
+    elevation: 10,
   },
 });

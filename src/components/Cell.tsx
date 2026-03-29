@@ -54,7 +54,8 @@ export function Cell({ value, onPress, disabled, size }: CellProps) {
     : value === 'O' ? colors.oPrimary
     : 'rgba(171, 172, 185, 0.4)';
 
-  const borderWidth = value ? 3 : 1;
+  // Reference: 4px stroke on filled, 1px on empty
+  const borderWidth = value ? 4 : 1;
 
   // Mark fills ~80% of the cell
   const markSize = Math.floor(size * 0.78);

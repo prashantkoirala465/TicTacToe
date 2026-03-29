@@ -1,92 +1,119 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { Line, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
+import React from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import Svg, { Line } from "react-native-svg";
 
-const { width: SW, height: SH } = Dimensions.get('window');
+const { width: SW, height: SH } = Dimensions.get("window");
 
 /**
- * Perspective grid pattern inspired by reference project's bar.svg
- * Uses color-dodge-like appearance via light semi-transparent lines
- * on the radial gradient background.
+ * Perspective grid — draws converging lines that create depth.
+ * Inspired by reference project's bar.svg geometric pattern.
+ * Lines are thick enough to see but transparent enough to feel atmospheric.
  */
-function GridPattern() {
-  const lines: React.ReactElement[] = [];
+function PerspectiveGrid() {
+  const elements: React.ReactElement[] = [];
 
-  // Horizontal lines — spread across screen with perspective spacing
-  const hCount = 14;
-  for (let i = 0; i < hCount; i++) {
-    const t = i / (hCount - 1);
-    // Quadratic spacing — lines bunch at top, spread at bottom
-    const y = SH * 0.12 + SH * 0.88 * t * t;
-    const opacity = 0.025 + t * 0.055;
-    lines.push(
-      <Line key={`h${i}`} x1={0} y1={y} x2={SW} y2={y}
-        stroke="rgba(150, 130, 220, 1)" strokeWidth={0.5} opacity={opacity} />
+  // Vanishing point
+  const cx = SW / 2;
+  const cy = SH * 0.06;
+
+  // Vertical lines radiating from vanishing point
+  const vCount = 18;
+  for (let i = 0; i < vCount; i++) {
+    const t = i / (vCount - 1);
+    const bottomX = -SW * 0.3 + SW * 1.6 * t;
+    const topX = cx + (bottomX - cx) * 0.05;
+    // Lines at center are brighter, edges fade
+    const distFromCenter = Math.abs(t - 0.5) * 2;
+    const opacity = (1 - distFromCenter * 0.7) * 0.09;
+    elements.push(
+      <Line
+        key={`v${i}`}
+        x1={topX}
+        y1={cy + SH * 0.05}
+        x2={bottomX}
+        y2={SH}
+        stroke="#8b7ad4"
+        strokeWidth={1}
+        opacity={opacity}
+      />,
     );
   }
 
-  // Vertical lines converging to vanishing point at center-top
-  const vCount = 14;
-  const vx = SW / 2;
-  const vy = SH * 0.08;
-  for (let i = 0; i < vCount; i++) {
-    const t = i / (vCount - 1);
-    const bx = SW * (t * 1.2 - 0.1); // Extend past edges slightly
-    const opacity = 0.02 + (1 - Math.abs(t - 0.5) * 2) * 0.05;
-    lines.push(
-      <Line key={`v${i}`}
-        x1={vx + (bx - vx) * 0.08}
-        y1={vy + SH * 0.08}
-        x2={bx}
-        y2={SH * 1.05}
-        stroke="rgba(150, 130, 220, 1)" strokeWidth={0.5} opacity={opacity} />
+  // Horizontal lines — quadratic spacing for perspective
+  const hCount = 16;
+  for (let i = 0; i < hCount; i++) {
+    const t = i / (hCount - 1);
+    const y = SH * 0.15 + SH * 0.85 * t * t;
+    // Lines near bottom are brighter
+    const opacity = (0.02 + t * 0.07) * 1.2;
+    elements.push(
+      <Line
+        key={`h${i}`}
+        x1={0}
+        y1={y}
+        x2={SW}
+        y2={y}
+        stroke="#8b7ad4"
+        strokeWidth={1}
+        opacity={opacity}
+      />,
     );
   }
 
   return (
-    <Svg width={SW} height={SH} style={StyleSheet.absoluteFill}>
-      {lines}
+    <Svg
+      width={SW}
+      height={SH}
+      style={StyleSheet.absoluteFill}
+      pointerEvents="none"
+    >
+      {elements}
     </Svg>
   );
 }
 
-interface GameBackgroundProps {
+interface Props {
   children: React.ReactNode;
 }
 
-export function GameBackground({ children }: GameBackgroundProps) {
+export function GameBackground({ children }: Props) {
   return (
     <View style={styles.root}>
-      {/* Layer 1: Base black */}
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: '#000' }]} />
+      {/* Base: deep black */}
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: "#020014" }]} />
 
-      {/* Layer 2: Radial purple glow (simulated with centered oval gradient) */}
-      <View style={styles.radialWrap}>
-        <LinearGradient
-          colors={['rgba(58, 39, 140, 0.85)', 'rgba(58, 39, 140, 0.4)', 'rgba(0, 0, 0, 0)']}
-          locations={[0, 0.45, 1]}
-          start={{ x: 0.5, y: 0.3 }}
-          end={{ x: 0.5, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </View>
+      {/* Center purple glow — vertical */}
+      <LinearGradient
+        colors={[
+          "rgba(58,39,140,0.0)",
+          "rgba(58,39,140,0.55)",
+          "rgba(58,39,140,0.55)",
+          "rgba(58,39,140,0.0)",
+        ]}
+        locations={[0, 0.3, 0.55, 1]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
 
-      {/* Layer 2b: Horizontal radial spread */}
-      <View style={styles.radialWrapH}>
-        <LinearGradient
-          colors={['rgba(58, 39, 140, 0.5)', 'rgba(0, 0, 0, 0)']}
-          locations={[0, 1]}
-          start={{ x: 0.5, y: 0.5 }}
-          end={{ x: 0, y: 0.5 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </View>
+      {/* Center purple glow — horizontal (creates circular-ish glow) */}
+      <LinearGradient
+        colors={[
+          "rgba(0,0,0,0.9)",
+          "rgba(0,0,0,0)",
+          "rgba(0,0,0,0)",
+          "rgba(0,0,0,0.9)",
+        ]}
+        locations={[0, 0.25, 0.75, 1]}
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        style={StyleSheet.absoluteFill}
+      />
 
-      {/* Layer 3: Grid pattern (like bar.svg with color-dodge) */}
-      <GridPattern />
+      {/* Grid pattern */}
+      <PerspectiveGrid />
 
-      {/* Content */}
       {children}
     </View>
   );
@@ -95,12 +122,5 @@ export function GameBackground({ children }: GameBackgroundProps) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#000',
-  },
-  radialWrap: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  radialWrapH: {
-    ...StyleSheet.absoluteFillObject,
   },
 });
