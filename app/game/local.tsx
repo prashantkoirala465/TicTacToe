@@ -13,15 +13,13 @@ import { colors, spacing } from '../../src/constants/theme';
 
 export default function LocalGameScreen() {
   const router = useRouter();
-  const {
-    board,
-    currentPlayer,
-    winner,
-    winLine,
-    scores,
-    makeMove,
-    resetBoard,
-  } = useGameStore();
+  const board = useGameStore((s) => s.board);
+  const currentPlayer = useGameStore((s) => s.currentPlayer);
+  const winner = useGameStore((s) => s.winner);
+  const winLine = useGameStore((s) => s.winLine);
+  const scores = useGameStore((s) => s.scores);
+  const makeMove = useGameStore((s) => s.makeMove);
+  const resetBoard = useGameStore((s) => s.resetBoard);
 
   const [boardSize, setBoardSize] = useState(0);
 
@@ -62,7 +60,7 @@ export default function LocalGameScreen() {
             onCellPress={handleCellPress}
             disabled={!!winner}
           />
-          <WinLine line={winLine} boardSize={boardSize} />
+          <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
         </View>
 
         <ScoreBar scores={scores} />

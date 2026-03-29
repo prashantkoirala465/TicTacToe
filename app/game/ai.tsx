@@ -15,17 +15,15 @@ import { colors, spacing } from '../../src/constants/theme';
 
 export default function AiGameScreen() {
   const router = useRouter();
-  const {
-    board,
-    currentPlayer,
-    winner,
-    winLine,
-    scores,
-    difficulty,
-    makeMove,
-    resetBoard,
-    setDifficulty,
-  } = useGameStore();
+  const board = useGameStore((s) => s.board);
+  const currentPlayer = useGameStore((s) => s.currentPlayer);
+  const winner = useGameStore((s) => s.winner);
+  const winLine = useGameStore((s) => s.winLine);
+  const scores = useGameStore((s) => s.scores);
+  const difficulty = useGameStore((s) => s.difficulty);
+  const makeMove = useGameStore((s) => s.makeMove);
+  const resetBoard = useGameStore((s) => s.resetBoard);
+  const setDifficulty = useGameStore((s) => s.setDifficulty);
 
   const [boardSize, setBoardSize] = useState(0);
   const [showPicker, setShowPicker] = useState(true);
@@ -37,7 +35,8 @@ export default function AiGameScreen() {
       setAiThinking(true);
       const delay = 300 + Math.random() * 500;
       const timer = setTimeout(() => {
-        const move = getAiMove([...board], 'O', difficulty);
+        const currentBoard = useGameStore.getState().board;
+        const move = getAiMove([...currentBoard], 'O', difficulty);
         makeMove(move);
         setAiThinking(false);
       }, delay);
@@ -93,7 +92,7 @@ export default function AiGameScreen() {
             onCellPress={handleCellPress}
             disabled={!!winner || currentPlayer === 'O' || aiThinking}
           />
-          <WinLine line={winLine} boardSize={boardSize} />
+          <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
         </View>
 
         <ScoreBar scores={scores} />
@@ -102,6 +101,7 @@ export default function AiGameScreen() {
       <DifficultyPicker
         visible={showPicker}
         onSelect={handleDifficultySelect}
+        onClose={() => router.back()}
       />
 
       {winner && (

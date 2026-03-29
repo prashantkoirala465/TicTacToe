@@ -43,6 +43,7 @@ function minimax(
 
 function getBestMove(board: Board, aiMark: Mark): number {
   const moves = getAvailableMoves(board);
+  if (moves.length === 0) return -1; // Should never happen, defensive guard
   let bestScore = -Infinity;
   let bestMove = moves[0];
 
@@ -62,6 +63,7 @@ function getBestMove(board: Board, aiMark: Mark): number {
 
 function getRandomMove(board: Board): number {
   const moves = getAvailableMoves(board);
+  if (moves.length === 0) return -1;
   return moves[Math.floor(Math.random() * moves.length)];
 }
 

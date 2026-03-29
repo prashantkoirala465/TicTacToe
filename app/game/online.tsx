@@ -18,23 +18,23 @@ export default function OnlineGameScreen() {
   const isHost = host === '1';
   const myMark = isHost ? 'X' : 'O';
 
-  const {
-    board,
-    currentPlayer,
-    winner,
-    winLine,
-    scores,
-    makeMove,
-    resetBoard,
-  } = useGameStore();
+  const board = useGameStore((s) => s.board);
+  const currentPlayer = useGameStore((s) => s.currentPlayer);
+  const winner = useGameStore((s) => s.winner);
+  const winLine = useGameStore((s) => s.winLine);
+  const scores = useGameStore((s) => s.scores);
+  const makeMove = useGameStore((s) => s.makeMove);
+  const resetBoard = useGameStore((s) => s.resetBoard);
 
   const [boardSize, setBoardSize] = useState(0);
 
   const handleOpponentMove = useCallback(
     (cell: number) => {
+      const state = useGameStore.getState();
+      if (state.currentPlayer === myMark) return; // Not opponent's turn — ignore
       makeMove(cell);
     },
-    [makeMove],
+    [makeMove, myMark],
   );
 
   const handleOpponentJoined = useCallback(() => {}, []);
@@ -45,12 +45,17 @@ export default function OnlineGameScreen() {
     ]);
   }, [router]);
 
-  const { status, sendMove } = useOnlineGame({
+  const handleOpponentReset = useCallback(() => {
+    resetBoard();
+  }, [resetBoard]);
+
+  const { status, sendMove, sendReset } = useOnlineGame({
     roomCode: code || '',
     isHost,
     onOpponentMove: handleOpponentMove,
     onOpponentJoined: handleOpponentJoined,
     onOpponentLeft: handleOpponentLeft,
+    onOpponentReset: handleOpponentReset,
   });
 
   useEffect(() => {
@@ -96,7 +101,7 @@ export default function OnlineGameScreen() {
                 onCellPress={handleCellPress}
                 disabled={!!winner || !isMyTurn}
               />
-              <WinLine line={winLine} boardSize={boardSize} />
+              <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
             </View>
 
             <ScoreBar scores={scores} />
@@ -113,7 +118,7 @@ export default function OnlineGameScreen() {
           winner={winner}
           playerXName={isHost ? 'You' : 'Opponent'}
           playerOName={isHost ? 'Opponent' : 'You'}
-          onPlayAgain={resetBoard}
+          onPlayAgain={() => { resetBoard(); sendReset(); }}
           onExit={() => router.dismissAll()}
         />
       )}

@@ -23,13 +23,14 @@ function getCellCenter(index: number, boardSize: number, gap: number, padding: n
 interface WinLineProps {
   line: number[] | null;
   boardSize: number;
+  winner?: 'X' | 'O' | null;
 }
 
 const GAP = 10;
 const PADDING = 4;
 const LINE_LENGTH = 500;
 
-export function WinLine({ line, boardSize }: WinLineProps) {
+export function WinLine({ line, boardSize, winner }: WinLineProps) {
   const progress = useSharedValue(0);
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export function WinLine({ line, boardSize }: WinLineProps) {
 
   if (!line || !boardSize) return null;
 
+  const strokeColor = winner === 'O' ? '#EF4444' : '#6366F1';
   const start = getCellCenter(line[0], boardSize, GAP, PADDING);
   const end = getCellCenter(line[2], boardSize, GAP, PADDING);
 
@@ -60,7 +62,7 @@ export function WinLine({ line, boardSize }: WinLineProps) {
         y1={start.y}
         x2={end.x}
         y2={end.y}
-        stroke="#6366F1"
+        stroke={strokeColor}
         strokeWidth={4}
         strokeLinecap="round"
         strokeDasharray={LINE_LENGTH}

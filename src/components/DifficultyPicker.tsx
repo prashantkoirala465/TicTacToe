@@ -14,9 +14,10 @@ const difficulties: { key: Difficulty; label: string; description: string }[] = 
 interface DifficultyPickerProps {
   visible: boolean;
   onSelect: (difficulty: Difficulty) => void;
+  onClose: () => void;
 }
 
-export function DifficultyPicker({ visible, onSelect }: DifficultyPickerProps) {
+export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPickerProps) {
   return (
     <Modal visible={visible} transparent animationType="fade">
       <Animated.View entering={FadeIn.duration(200)} style={styles.overlay}>
@@ -40,6 +41,9 @@ export function DifficultyPicker({ visible, onSelect }: DifficultyPickerProps) {
               </Pressable>
             ))}
           </View>
+          <Pressable style={styles.cancelButton} onPress={() => { onButtonPress(); onClose(); }}>
+            <Text style={styles.cancelText}>Cancel</Text>
+          </Pressable>
         </Animated.View>
       </Animated.View>
     </Modal>
@@ -83,5 +87,15 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.textSecondary,
     marginTop: 2,
+  },
+  cancelButton: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.sm,
+    alignItems: 'center',
+  },
+  cancelText: {
+    color: colors.textSecondary,
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

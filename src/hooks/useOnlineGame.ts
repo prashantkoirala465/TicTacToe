@@ -11,6 +11,7 @@ interface UseOnlineGameOptions {
   onOpponentMove: (cell: number) => void;
   onOpponentJoined: () => void;
   onOpponentLeft: () => void;
+  onOpponentReset: () => void;
 }
 
 export function useOnlineGame({
@@ -19,6 +20,7 @@ export function useOnlineGame({
   onOpponentMove,
   onOpponentJoined,
   onOpponentLeft,
+  onOpponentReset,
 }: UseOnlineGameOptions) {
   const channelRef = useRef<RealtimeChannel | null>(null);
   const [status, setStatus] = useState<OnlineStatus>('connecting');
@@ -48,6 +50,9 @@ export function useOnlineGame({
       .on('broadcast', { event: 'move' }, ({ payload }) => {
         onOpponentMove(payload.cell);
       })
+      .on('broadcast', { event: 'reset' }, () => {
+        onOpponentReset();
+      })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           await channel.track({ online: true });
@@ -61,7 +66,7 @@ export function useOnlineGame({
       channel.unsubscribe();
       channelRef.current = null;
     };
-  }, [roomCode, isHost, onOpponentMove, onOpponentJoined, onOpponentLeft]);
+  }, [roomCode, isHost, onOpponentMove, onOpponentJoined, onOpponentLeft, onOpponentReset]);
 
   const sendMove = useCallback(
     (cell: number, player: Mark) => {
@@ -74,5 +79,12 @@ export function useOnlineGame({
     [],
   );
 
-  return { status, sendMove };
+  const sendReset = useCallback(() => {
+    channelRef.current?.send({
+      type: 'broadcast',
+      event: 'reset',
+    });
+  }, []);
+
+  return { status, sendMove, sendReset };
 }

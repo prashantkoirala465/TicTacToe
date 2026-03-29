@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Share, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,7 +19,11 @@ export default function CreateRoomScreen() {
     createRoom();
   }, []);
 
-  const createRoom = async () => {
+  const createRoom = async (retries = 0) => {
+    if (retries >= 5) {
+      setError('Failed to create room. Try again.');
+      return;
+    }
     const code = generateRoomCode();
     try {
       const { error: dbError } = await supabase
@@ -28,7 +32,7 @@ export default function CreateRoomScreen() {
 
       if (dbError) {
         if (dbError.code === '23505') {
-          createRoom();
+          createRoom(retries + 1);
           return;
         }
         setError('Failed to create room. Try again.');
@@ -40,18 +44,24 @@ export default function CreateRoomScreen() {
     }
   };
 
+  const handleOpponentMove = useCallback(() => {}, []);
+  const handleOpponentJoined = useCallback(() => {
+    resetBoard();
+    router.replace({
+      pathname: '/game/online',
+      params: { code: roomCode, host: '1' },
+    });
+  }, [resetBoard, router, roomCode]);
+  const handleOpponentLeft = useCallback(() => {}, []);
+  const handleOpponentReset = useCallback(() => {}, []);
+
   const { status } = useOnlineGame({
     roomCode,
     isHost: true,
-    onOpponentMove: () => {},
-    onOpponentJoined: () => {
-      resetBoard();
-      router.replace({
-        pathname: '/game/online',
-        params: { code: roomCode, host: '1' },
-      });
-    },
-    onOpponentLeft: () => {},
+    onOpponentMove: handleOpponentMove,
+    onOpponentJoined: handleOpponentJoined,
+    onOpponentLeft: handleOpponentLeft,
+    onOpponentReset: handleOpponentReset,
   });
 
   const handleShare = async () => {
