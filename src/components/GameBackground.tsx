@@ -1,67 +1,52 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { Line, Defs, LinearGradient as SvgGradient, Stop } from 'react-native-svg';
+import Svg, { Line, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SW, height: SH } = Dimensions.get('window');
 
-function PerspectiveGrid() {
-  const w = SCREEN_WIDTH;
-  const h = SCREEN_HEIGHT;
+/**
+ * Perspective grid pattern inspired by reference project's bar.svg
+ * Uses color-dodge-like appearance via light semi-transparent lines
+ * on the radial gradient background.
+ */
+function GridPattern() {
+  const lines: React.ReactElement[] = [];
 
-  // Horizontal lines receding into perspective
-  const horizontalLines = [];
-  const lineCount = 12;
-  for (let i = 0; i < lineCount; i++) {
-    const t = i / (lineCount - 1);
-    // Lines get closer together toward the top (perspective)
-    const y = h * 0.25 + (h * 0.75) * Math.pow(t, 1.5);
-    const opacity = 0.04 + t * 0.08;
-    horizontalLines.push(
-      <Line
-        key={`h${i}`}
-        x1={0}
-        y1={y}
-        x2={w}
-        y2={y}
-        stroke="#7b6bc4"
-        strokeWidth={0.5}
-        opacity={opacity}
-      />
+  // Horizontal lines — spread across screen with perspective spacing
+  const hCount = 14;
+  for (let i = 0; i < hCount; i++) {
+    const t = i / (hCount - 1);
+    // Quadratic spacing — lines bunch at top, spread at bottom
+    const y = SH * 0.12 + SH * 0.88 * t * t;
+    const opacity = 0.025 + t * 0.055;
+    lines.push(
+      <Line key={`h${i}`} x1={0} y1={y} x2={SW} y2={y}
+        stroke="rgba(150, 130, 220, 1)" strokeWidth={0.5} opacity={opacity} />
     );
   }
 
-  // Vertical lines converging at center top
-  const verticalLines = [];
-  const vCount = 10;
-  const vanishX = w / 2;
-  const vanishY = h * 0.15;
+  // Vertical lines converging to vanishing point at center-top
+  const vCount = 14;
+  const vx = SW / 2;
+  const vy = SH * 0.08;
   for (let i = 0; i < vCount; i++) {
     const t = i / (vCount - 1);
-    const bottomX = w * t;
-    const opacity = 0.03 + (1 - Math.abs(t - 0.5) * 2) * 0.06;
-    verticalLines.push(
-      <Line
-        key={`v${i}`}
-        x1={vanishX + (bottomX - vanishX) * 0.15}
-        y1={vanishY + h * 0.15}
-        x2={bottomX}
-        y2={h}
-        stroke="#7b6bc4"
-        strokeWidth={0.5}
-        opacity={opacity}
-      />
+    const bx = SW * (t * 1.2 - 0.1); // Extend past edges slightly
+    const opacity = 0.02 + (1 - Math.abs(t - 0.5) * 2) * 0.05;
+    lines.push(
+      <Line key={`v${i}`}
+        x1={vx + (bx - vx) * 0.08}
+        y1={vy + SH * 0.08}
+        x2={bx}
+        y2={SH * 1.05}
+        stroke="rgba(150, 130, 220, 1)" strokeWidth={0.5} opacity={opacity} />
     );
   }
 
   return (
-    <Svg
-      width={w}
-      height={h}
-      style={StyleSheet.absoluteFill}
-    >
-      {horizontalLines}
-      {verticalLines}
+    <Svg width={SW} height={SH} style={StyleSheet.absoluteFill}>
+      {lines}
     </Svg>
   );
 }
@@ -72,37 +57,50 @@ interface GameBackgroundProps {
 
 export function GameBackground({ children }: GameBackgroundProps) {
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#1a1055', '#0d0828', '#000000']}
-        locations={[0, 0.5, 1]}
-        style={StyleSheet.absoluteFill}
-      />
-      {/* Radial glow in center */}
-      <View style={styles.radialGlow} />
-      <PerspectiveGrid />
+    <View style={styles.root}>
+      {/* Layer 1: Base black */}
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: '#000' }]} />
+
+      {/* Layer 2: Radial purple glow (simulated with centered oval gradient) */}
+      <View style={styles.radialWrap}>
+        <LinearGradient
+          colors={['rgba(58, 39, 140, 0.85)', 'rgba(58, 39, 140, 0.4)', 'rgba(0, 0, 0, 0)']}
+          locations={[0, 0.45, 1]}
+          start={{ x: 0.5, y: 0.3 }}
+          end={{ x: 0.5, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+      </View>
+
+      {/* Layer 2b: Horizontal radial spread */}
+      <View style={styles.radialWrapH}>
+        <LinearGradient
+          colors={['rgba(58, 39, 140, 0.5)', 'rgba(0, 0, 0, 0)']}
+          locations={[0, 1]}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 0, y: 0.5 }}
+          style={StyleSheet.absoluteFill}
+        />
+      </View>
+
+      {/* Layer 3: Grid pattern (like bar.svg with color-dodge) */}
+      <GridPattern />
+
+      {/* Content */}
       {children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     backgroundColor: '#000',
   },
-  radialGlow: {
-    position: 'absolute',
-    top: '15%',
-    left: '10%',
-    right: '10%',
-    height: '40%',
-    borderRadius: 999,
-    backgroundColor: 'rgba(58, 39, 140, 0.25)',
-    // Blur approximation via shadow
-    shadowColor: '#3A278C',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 100,
+  radialWrap: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  radialWrapH: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

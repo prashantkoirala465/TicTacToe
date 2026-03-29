@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     textAlign: 'center',
     textTransform: 'uppercase',
-    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowColor: '#080206',
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
+    textShadowRadius: 0,
   },
 });

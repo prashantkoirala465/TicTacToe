@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        // Enables TypeScript's composite feature for managing project references.
+        "composite": true,
+
+        // Skips type checking of declaration files to speed up the build process.
+        "skipLibCheck": true,
+
+        // Specifies ECMAScript modules using the ESNext syntax.
+        "module": "ESNext",
+
+        // Sets the module resolution strategy to "bundler".
+        "moduleResolution": "bundler",
+
+        // Allows synthetic default imports from modules without default exports.
+        "allowSyntheticDefaultImports": true
+    },
+    // Specifies that only the 'vite.config.ts' file should be included in compilation.
+    "include": ["vite.config.ts"]
+}
+
