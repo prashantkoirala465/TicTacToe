@@ -6,7 +6,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ModeCard } from '../src/components/ModeCard';
 import { useGameStore } from '../src/store/game-store';
-import { colors, spacing, typography, radii } from '../src/constants/theme';
+import { colors, spacing, radii } from '../src/constants/theme';
 import { isSupabaseConfigured } from '../src/lib/supabase';
 
 export default function HomeScreen() {
@@ -23,95 +23,91 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {/* Logo */}
-        <Animated.View
-          entering={FadeIn.delay(0).springify().damping(12)}
-          style={styles.logoArea}
-        >
-          <LinearGradient
-            colors={[colors.brandGradientStart, colors.brandGradientEnd]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.logoSquare}
+    <LinearGradient colors={colors.bgGradient} style={styles.gradient}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          {/* Logo */}
+          <Animated.View
+            entering={FadeIn.delay(0).springify().damping(12)}
+            style={styles.logoArea}
           >
-            <Text style={styles.logoMark}>X</Text>
-          </LinearGradient>
-          <Text style={styles.appName}>Tic</Text>
-          <Text style={styles.tagline}>The classic, perfected.</Text>
-        </Animated.View>
+            <Text style={styles.appName}>TIC</Text>
+            <Text style={styles.tagline}>THE CLASSIC, PERFECTED.</Text>
+          </Animated.View>
 
-        {/* Mode Cards */}
-        <View style={styles.cards}>
-          <ModeCard
-            icon="👥"
-            iconBgColor={colors.localIconBg}
-            title="Pass & Play"
-            subtitle="Two players, one device"
-            onPress={() => startGame('local')}
-            delay={0}
-          />
-          <ModeCard
-            icon="🤖"
-            iconBgColor={colors.aiIconBg}
-            title="vs Computer"
-            subtitle="Easy, Medium, or Hard"
-            onPress={() => startGame('ai')}
-            delay={80}
-          />
-          <ModeCard
-            icon="🌐"
-            iconBgColor={colors.onlineIconBg}
-            title="Create Game"
-            subtitle={isSupabaseConfigured ? 'Host a room for a friend' : 'Requires online setup'}
-            onPress={
-              isSupabaseConfigured
-                ? () => {
-                    setMode('online');
-                    resetScores();
-                    router.push('/lobby/create');
-                  }
-                : () =>
-                    Alert.alert(
-                      'Online Mode',
-                      'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
-                    )
-            }
-            delay={160}
-            dimmed={!isSupabaseConfigured}
-          />
-          <ModeCard
-            icon="🔗"
-            iconBgColor={colors.onlineIconBg}
-            title="Join Game"
-            subtitle={isSupabaseConfigured ? 'Enter a room code' : 'Requires online setup'}
-            onPress={
-              isSupabaseConfigured
-                ? () => {
-                    setMode('online');
-                    resetScores();
-                    router.push('/lobby/join');
-                  }
-                : () =>
-                    Alert.alert(
-                      'Online Mode',
-                      'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
-                    )
-            }
-            delay={240}
-            dimmed={!isSupabaseConfigured}
-          />
+          {/* Mode Cards */}
+          <View style={styles.cards}>
+            <ModeCard
+              icon="👥"
+              iconBgColor="rgba(247, 142, 30, 0.2)"
+              title="Pass & Play"
+              subtitle="Two players, one device"
+              onPress={() => startGame('local')}
+              delay={0}
+            />
+            <ModeCard
+              icon="🤖"
+              iconBgColor="rgba(69, 139, 188, 0.2)"
+              title="vs Computer"
+              subtitle="Easy, Medium, or Hard"
+              onPress={() => startGame('ai')}
+              delay={80}
+            />
+            <ModeCard
+              icon="🌐"
+              iconBgColor="rgba(205, 170, 238, 0.2)"
+              title="Create Game"
+              subtitle={isSupabaseConfigured ? 'Host a room for a friend' : 'Requires online setup'}
+              onPress={
+                isSupabaseConfigured
+                  ? () => {
+                      setMode('online');
+                      resetScores();
+                      router.push('/lobby/create');
+                    }
+                  : () =>
+                      Alert.alert(
+                        'Online Mode',
+                        'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
+                      )
+              }
+              delay={160}
+              dimmed={!isSupabaseConfigured}
+            />
+            <ModeCard
+              icon="🔗"
+              iconBgColor="rgba(205, 170, 238, 0.2)"
+              title="Join Game"
+              subtitle={isSupabaseConfigured ? 'Enter a room code' : 'Requires online setup'}
+              onPress={
+                isSupabaseConfigured
+                  ? () => {
+                      setMode('online');
+                      resetScores();
+                      router.push('/lobby/join');
+                    }
+                  : () =>
+                      Alert.alert(
+                        'Online Mode',
+                        'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
+                      )
+              }
+              delay={240}
+              dimmed={!isSupabaseConfigured}
+            />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   content: {
     flex: 1,
@@ -120,35 +116,23 @@ const styles = StyleSheet.create({
   },
   logoArea: {
     alignItems: 'center',
-    marginBottom: 40,
-  },
-  logoSquare: {
-    width: 72,
-    height: 72,
-    borderRadius: radii.appIcon,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.lg,
-    shadowColor: colors.brandGradientStart,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 24,
-  },
-  logoMark: {
-    fontSize: 32,
-    fontWeight: '900',
-    color: '#FFFFFF',
+    marginBottom: 48,
   },
   appName: {
-    ...typography.heading,
-    color: colors.textPrimary,
-    letterSpacing: -0.5,
+    fontSize: 56,
+    fontWeight: '900',
+    color: colors.textWhite,
+    letterSpacing: 12,
+    textShadowColor: colors.xPrimary,
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 30,
   },
   tagline: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: colors.textSecondary,
-    marginTop: spacing.xs,
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.textGray,
+    letterSpacing: 4,
+    marginTop: spacing.sm,
   },
   cards: {
     gap: spacing.md,

@@ -39,7 +39,7 @@ export function ModeCard({
   return (
     <Animated.View entering={FadeInDown.delay(delay).springify().damping(14)}>
       <AnimatedPressable
-        style={[styles.card, animatedStyle, dimmed && { opacity: 0.4 }]}
+        style={[styles.card, animatedStyle, dimmed && { opacity: 0.35 }]}
         onPressIn={() => {
           scale.value = withSpring(0.97, { damping: 15, stiffness: 300 });
         }}
@@ -58,7 +58,7 @@ export function ModeCard({
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <Text style={styles.chevron}>›</Text>
+        <Text style={styles.chevron}>&rsaquo;</Text>
       </AnimatedPressable>
     </Animated.View>
   );
@@ -66,14 +66,14 @@ export function ModeCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.modeCardBg,
+    backgroundColor: colors.bgCard,
     borderRadius: radii.card,
     padding: spacing.xl,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.lg,
     borderWidth: 1,
-    borderColor: colors.modeCardBorder,
+    borderColor: colors.bgCardBorder,
   },
   iconContainer: {
     width: 48,
@@ -90,15 +90,16 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.body,
-    color: colors.textPrimary,
+    color: colors.textWhite,
   },
   subtitle: {
     ...typography.caption,
-    color: colors.textSecondary,
+    color: colors.textGray,
     marginTop: 2,
   },
   chevron: {
-    fontSize: 18,
-    color: colors.cellBorder,
+    fontSize: 20,
+    color: colors.textGray,
+    fontWeight: '700',
   },
 });

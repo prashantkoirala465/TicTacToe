@@ -14,14 +14,14 @@ export function PlayerBar({ currentPlayer, scores, playerXName, playerOName }: P
   return (
     <View>
       <View style={styles.turnIndicator}>
-        <Text style={styles.turnLabel}>
+        <Text style={[styles.turnLabel, { color: currentPlayer === 'X' ? colors.xPrimary : colors.oPrimary }]}>
           {currentPlayer === 'X' ? playerXName : playerOName}'S TURN
         </Text>
       </View>
       <View style={styles.container}>
         <View style={styles.player}>
-          <View style={[styles.badge, styles.xBadge]}>
-            <Text style={[styles.badgeMark, { color: colors.xMark }]}>X</Text>
+          <View style={[styles.badge, { backgroundColor: 'rgba(247, 142, 30, 0.2)', borderColor: colors.xPrimary }]}>
+            <Text style={[styles.badgeMark, { color: colors.xPrimary }]}>X</Text>
           </View>
           <View>
             <Text style={styles.name}>{playerXName}</Text>
@@ -34,8 +34,8 @@ export function PlayerBar({ currentPlayer, scores, playerXName, playerOName }: P
             <Text style={styles.name}>{playerOName}</Text>
             <Text style={styles.wins}>{scores.o} wins</Text>
           </View>
-          <View style={[styles.badge, styles.oBadge]}>
-            <Text style={[styles.badgeMark, { color: colors.oMark }]}>O</Text>
+          <View style={[styles.badge, { backgroundColor: 'rgba(69, 139, 188, 0.2)', borderColor: colors.oPrimary }]}>
+            <Text style={[styles.badgeMark, { color: colors.oPrimary }]}>O</Text>
           </View>
         </View>
       </View>
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
   },
   turnLabel: {
     ...typography.label,
-    color: colors.textSecondary,
   },
   container: {
     flexDirection: 'row',
@@ -70,29 +69,24 @@ const styles = StyleSheet.create({
     borderRadius: radii.badge,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  xBadge: {
-    backgroundColor: colors.xBackground,
-  },
-  oBadge: {
-    backgroundColor: colors.oBackground,
+    borderWidth: 2,
   },
   badgeMark: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: '900',
   },
   name: {
     fontSize: 14,
-    fontWeight: '600',
-    color: colors.textPrimary,
+    fontWeight: '700',
+    color: colors.textWhite,
   },
   wins: {
     ...typography.small,
-    color: colors.textSecondary,
+    color: colors.textGray,
   },
   vs: {
     fontSize: 13,
-    fontWeight: '700',
-    color: colors.cellBorder,
+    fontWeight: '900',
+    color: colors.textGray,
   },
 });

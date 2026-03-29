@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-nati
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import { supabase } from '../../src/lib/supabase';
 import { RoomCodeInput } from '../../src/components/RoomCodeInput';
 import { useGameStore } from '../../src/store/game-store';
@@ -56,48 +57,49 @@ export default function JoinRoomScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Animated.View entering={FadeIn.duration(200)}>
-          <Text style={styles.title}>Join Game</Text>
-          <Text style={styles.subtitle}>Enter the 4-character room code</Text>
-        </Animated.View>
+    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <Animated.View entering={FadeIn.duration(200)}>
+            <Text style={styles.title}>Join Game</Text>
+            <Text style={styles.subtitle}>Enter the 4-character room code</Text>
+          </Animated.View>
 
-        <Animated.View
-          entering={FadeInUp.delay(100).springify().damping(14)}
-          style={styles.inputArea}
-        >
-          {joining ? (
-            <ActivityIndicator color={colors.brandGradientStart} size="large" />
-          ) : (
-            <RoomCodeInput
-              value={code}
-              onChange={setCode}
-              onComplete={handleJoin}
-            />
-          )}
+          <Animated.View
+            entering={FadeInUp.delay(100).springify().damping(14)}
+            style={styles.inputArea}
+          >
+            {joining ? (
+              <ActivityIndicator color={colors.xPrimary} size="large" />
+            ) : (
+              <RoomCodeInput
+                value={code}
+                onChange={setCode}
+                onComplete={handleJoin}
+              />
+            )}
 
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        </Animated.View>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+          </Animated.View>
 
-        <Pressable
-          style={styles.backButton}
-          onPress={() => {
-            onButtonPress();
-            router.back();
-          }}
-        >
-          <Text style={styles.backText}>Cancel</Text>
-        </Pressable>
-      </View>
-    </SafeAreaView>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => {
+              onButtonPress();
+              router.back();
+            }}
+          >
+            <Text style={styles.backText}>Cancel</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   content: {
     flex: 1,
@@ -107,12 +109,12 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.title,
-    color: colors.textPrimary,
+    color: colors.textWhite,
     textAlign: 'center',
   },
   subtitle: {
     ...typography.caption,
-    color: colors.textSecondary,
+    color: colors.textGray,
     textAlign: 'center',
     marginTop: spacing.xs,
     marginBottom: spacing.xxxl,
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...typography.caption,
-    color: colors.oMark,
+    color: colors.error,
     textAlign: 'center',
     marginTop: spacing.lg,
   },
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   backText: {
-    color: colors.textSecondary,
+    color: colors.textGray,
     fontSize: 15,
     fontWeight: '600',
   },

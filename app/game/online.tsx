@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Board } from '../../src/components/Board';
 import { PlayerBar } from '../../src/components/PlayerBar';
 import { ScoreBar } from '../../src/components/ScoreBar';
@@ -81,37 +82,39 @@ export default function OnlineGameScreen() {
   const isMyTurn = currentPlayer === myMark;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {status === 'disconnected' ? null : (
-          <>
-            <PlayerBar
-              currentPlayer={currentPlayer}
-              scores={scores}
-              playerXName={isHost ? 'You' : 'Opponent'}
-              playerOName={isHost ? 'Opponent' : 'You'}
-            />
-
-            <View
-              onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
-              style={styles.boardContainer}
-            >
-              <Board
-                board={board}
-                onCellPress={handleCellPress}
-                disabled={!!winner || !isMyTurn}
+    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          {status === 'disconnected' ? null : (
+            <>
+              <PlayerBar
+                currentPlayer={currentPlayer}
+                scores={scores}
+                playerXName={isHost ? 'You' : 'Opponent'}
+                playerOName={isHost ? 'Opponent' : 'You'}
               />
-              <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
-            </View>
 
-            <ScoreBar scores={scores} />
+              <View
+                onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
+                style={styles.boardContainer}
+              >
+                <Board
+                  board={board}
+                  onCellPress={handleCellPress}
+                  disabled={!!winner || !isMyTurn}
+                />
+                <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
+              </View>
 
-            {!isMyTurn && !winner && (
-              <Text style={styles.waitingText}>Opponent's turn...</Text>
-            )}
-          </>
-        )}
-      </View>
+              <ScoreBar scores={scores} />
+
+              {!isMyTurn && !winner && (
+                <Text style={styles.waitingText}>Opponent's turn...</Text>
+              )}
+            </>
+          )}
+        </View>
+      </SafeAreaView>
 
       {winner && (
         <GameOverOverlay
@@ -122,14 +125,13 @@ export default function OnlineGameScreen() {
           onExit={() => router.dismissAll()}
         />
       )}
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   content: {
     flex: 1,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
   },
   waitingText: {
     ...typography.caption,
-    color: colors.textSecondary,
+    color: colors.textGray,
     textAlign: 'center',
     marginTop: spacing.lg,
   },

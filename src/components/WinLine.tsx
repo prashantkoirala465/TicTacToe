@@ -27,7 +27,7 @@ interface WinLineProps {
 }
 
 const GAP = 10;
-const PADDING = 4;
+const PADDING = 24;
 const LINE_LENGTH = 500;
 
 export function WinLine({ line, boardSize, winner }: WinLineProps) {
@@ -51,7 +51,7 @@ export function WinLine({ line, boardSize, winner }: WinLineProps) {
 
   if (!line || !boardSize) return null;
 
-  const strokeColor = winner === 'O' ? '#EF4444' : '#6366F1';
+  const strokeColor = winner === 'O' ? '#458BBC' : '#F78E1E';
   const start = getCellCenter(line[0], boardSize, GAP, PADDING);
   const end = getCellCenter(line[2], boardSize, GAP, PADDING);
 
@@ -63,7 +63,7 @@ export function WinLine({ line, boardSize, winner }: WinLineProps) {
         x2={end.x}
         y2={end.y}
         stroke={strokeColor}
-        strokeWidth={4}
+        strokeWidth={5}
         strokeLinecap="round"
         strokeDasharray={LINE_LENGTH}
         animatedProps={animatedProps}

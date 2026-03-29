@@ -53,11 +53,11 @@ export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPicke
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: colors.background,
+    backgroundColor: '#1a1055',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: spacing.xxl,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.title,
-    color: colors.textPrimary,
+    color: colors.textWhite,
     textAlign: 'center',
     marginBottom: spacing.xxl,
   },
@@ -73,19 +73,19 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   option: {
-    backgroundColor: colors.modeCardBg,
+    backgroundColor: colors.bgCard,
     borderRadius: radii.card,
     padding: spacing.xl,
     borderWidth: 1,
-    borderColor: colors.modeCardBorder,
+    borderColor: colors.bgCardBorder,
   },
   optionLabel: {
     ...typography.body,
-    color: colors.textPrimary,
+    color: colors.textWhite,
   },
   optionDesc: {
     ...typography.caption,
-    color: colors.textSecondary,
+    color: colors.textGray,
     marginTop: 2,
   },
   cancelButton: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cancelText: {
-    color: colors.textSecondary,
+    color: colors.textGray,
     fontSize: 15,
     fontWeight: '600',
   },

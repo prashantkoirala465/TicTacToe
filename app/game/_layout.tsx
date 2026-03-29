@@ -5,7 +5,7 @@ export default function GameLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#FFFFFF' },
+        contentStyle: { backgroundColor: '#000000' },
         gestureEnabled: true,
       }}
     />

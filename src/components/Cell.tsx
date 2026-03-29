@@ -5,7 +5,9 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { colors, radii, typography } from '../constants/theme';
+import { MarkX } from './MarkX';
+import { MarkO } from './MarkO';
+import { colors, radii } from '../constants/theme';
 import type { Cell as CellType } from '../utils/game-engine';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -39,7 +41,7 @@ export function Cell({ value, onPress, disabled }: CellProps) {
 
   const handlePressIn = () => {
     if (!disabled && !value) {
-      pressScale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
+      pressScale.value = withSpring(0.93, { damping: 15, stiffness: 300 });
     }
   };
 
@@ -47,11 +49,17 @@ export function Cell({ value, onPress, disabled }: CellProps) {
     pressScale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
 
+  const getBorderColor = () => {
+    if (value === 'X') return colors.xPrimary;
+    if (value === 'O') return colors.oPrimary;
+    return colors.bgCellBorder;
+  };
+
   return (
     <AnimatedPressable
       style={[
         styles.cell,
-        value ? styles.cellFilled : styles.cellEmpty,
+        { borderColor: getBorderColor(), borderWidth: value ? 3 : 1 },
         cellStyle,
       ]}
       onPress={onPress}
@@ -60,15 +68,9 @@ export function Cell({ value, onPress, disabled }: CellProps) {
       disabled={disabled || !!value}
     >
       {value && (
-        <Animated.Text
-          style={[
-            styles.mark,
-            value === 'X' ? styles.xMark : styles.oMark,
-            markStyle,
-          ]}
-        >
-          {value}
-        </Animated.Text>
+        <Animated.View style={markStyle}>
+          {value === 'X' ? <MarkX size={70} /> : <MarkO size={70} />}
+        </Animated.View>
       )}
     </AnimatedPressable>
   );
@@ -80,24 +82,6 @@ const styles = StyleSheet.create({
     borderRadius: radii.cell,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  cellFilled: {
-    backgroundColor: colors.cellFilled,
-  },
-  cellEmpty: {
-    backgroundColor: colors.cellEmpty,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: colors.cellBorder,
-  },
-  mark: {
-    fontSize: typography.mark.fontSize,
-    fontWeight: typography.mark.fontWeight,
-  },
-  xMark: {
-    color: colors.xMark,
-  },
-  oMark: {
-    color: colors.oMark,
+    backgroundColor: colors.bgCell,
   },
 });

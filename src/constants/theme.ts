@@ -1,26 +1,39 @@
 export const colors = {
-  background: '#FFFFFF',
-  cellFilled: '#F1F5F9',
-  cellEmpty: '#F8FAFC',
-  cellBorder: '#E2E8F0',
-  xMark: '#6366F1',
-  xBackground: '#EEF2FF',
-  oMark: '#EF4444',
-  oBackground: '#FEF2F2',
-  textPrimary: '#1E293B',
-  textSecondary: '#94A3B8',
-  scoreBar: '#F8FAFC',
-  brandGradientStart: '#6366F1',
-  brandGradientEnd: '#818CF8',
-  separator: '#E2E8F0',
-  modeCardBg: '#F8FAFC',
-  modeCardBorder: '#F1F5F9',
-  localIconBg: '#FEE2E2',
-  localIconBgStart: '#FEF2F2',
-  aiIconBg: '#E0E7FF',
-  aiIconBgStart: '#EEF2FF',
-  onlineIconBg: '#DCFCE7',
-  onlineIconBgStart: '#F0FDF4',
+  // Backgrounds
+  bgDark: '#000000',
+  bgPurple: '#3A278C',
+  bgCard: 'rgba(58, 39, 140, 0.4)',
+  bgCardBorder: 'rgba(171, 172, 185, 0.3)',
+  bgCell: 'rgba(58, 39, 140, 0.35)',
+  bgCellBorder: '#ABACB9',
+
+  // Marks
+  xPrimary: '#F78E1E',
+  xSecondary: '#F5BD4F',
+  oPrimary: '#458BBC',
+  oSecondary: '#278C86',
+
+  // Actions
+  buttonPrimary: '#F78E1E',
+  buttonSecondary: '#458BBC',
+
+  // Text
+  textWhite: '#FEFDFB',
+  textGray: '#ABACB9',
+  textDark: '#080206',
+  textPurple: '#3A278C',
+
+  // Accents
+  accentPurple: '#CDAAEE',
+  accentPurpleLight: '#E1DFFA',
+  success: '#B1D94D',
+  error: '#BA4300',
+
+  // Gradient arrays for LinearGradient
+  bgGradient: ['#3A278C', '#1a1055', '#000000'] as const,
+  xGradient: ['#F78E1E', '#F5BD4F'] as const,
+  oGradient: ['#458BBC', '#278C86'] as const,
+  logoGradient: ['#ffdfff', '#ff9ed8', '#d88aff', '#9a90fc', '#7b8bff', '#5c6adb', '#4a47b8', '#3425a2'] as const,
 } as const;
 
 export const spacing = {
@@ -39,8 +52,8 @@ export const typography = {
     fontWeight: '800' as const,
   },
   heading: {
-    fontSize: 32,
-    fontWeight: '800' as const,
+    fontSize: 34,
+    fontWeight: '900' as const,
   },
   title: {
     fontSize: 22,
@@ -56,8 +69,8 @@ export const typography = {
   },
   label: {
     fontSize: 11,
-    fontWeight: '600' as const,
-    letterSpacing: 1.5,
+    fontWeight: '700' as const,
+    letterSpacing: 2.4,
     textTransform: 'uppercase' as const,
   },
   small: {
@@ -67,10 +80,10 @@ export const typography = {
 } as const;
 
 export const radii = {
-  cell: 16,
+  cell: 8,
   card: 16,
   icon: 14,
-  badge: 12,
+  badge: 8,
   scoreBar: 14,
   appIcon: 20,
 } as const;

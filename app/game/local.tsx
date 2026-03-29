@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Board } from '../../src/components/Board';
 import { PlayerBar } from '../../src/components/PlayerBar';
 import { ScoreBar } from '../../src/components/ScoreBar';
@@ -42,29 +43,31 @@ export default function LocalGameScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <PlayerBar
-          currentPlayer={currentPlayer}
-          scores={scores}
-          playerXName="Player 1"
-          playerOName="Player 2"
-        />
-
-        <View
-          onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
-          style={styles.boardContainer}
-        >
-          <Board
-            board={board}
-            onCellPress={handleCellPress}
-            disabled={!!winner}
+    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <PlayerBar
+            currentPlayer={currentPlayer}
+            scores={scores}
+            playerXName="Player 1"
+            playerOName="Player 2"
           />
-          <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
-        </View>
 
-        <ScoreBar scores={scores} />
-      </View>
+          <View
+            onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
+            style={styles.boardContainer}
+          >
+            <Board
+              board={board}
+              onCellPress={handleCellPress}
+              disabled={!!winner}
+            />
+            <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
+          </View>
+
+          <ScoreBar scores={scores} />
+        </View>
+      </SafeAreaView>
 
       {winner && (
         <GameOverOverlay
@@ -75,14 +78,13 @@ export default function LocalGameScreen() {
           onExit={() => router.back()}
         />
       )}
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   content: {
     flex: 1,

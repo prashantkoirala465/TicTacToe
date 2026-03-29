@@ -5,7 +5,7 @@ export default function LobbyLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#FFFFFF' },
+        contentStyle: { backgroundColor: '#000000' },
         gestureEnabled: true,
         presentation: 'modal',
       }}
