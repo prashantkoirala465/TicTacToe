@@ -1,15 +1,11 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet, Modal } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { colors, spacing } from '../constants/theme';
-import { onButtonPress } from '../lib/feedback';
-import type { Difficulty } from '../store/game-store';
-
-const difficulties: { key: Difficulty; label: string; desc: string; color: string }[] = [
-  { key: 'easy', label: 'Easy', desc: 'Random moves — good for warmups', color: '#B1D94D' },
-  { key: 'medium', label: 'Medium', desc: 'Smart half the time — a fair fight', color: colors.xPrimary },
-  { key: 'hard', label: 'Hard', desc: 'Unbeatable — can you draw?', color: '#BA4300' },
-];
+import React from "react";
+import { View, Text, Pressable, StyleSheet, Modal } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+import { MarkX } from "./MarkX";
+import { GameButton } from "./GameButton";
+import { onButtonPress } from "../lib/feedback";
+import type { Difficulty } from "../store/game-store";
 
 interface DifficultyPickerProps {
   visible: boolean;
@@ -17,38 +13,71 @@ interface DifficultyPickerProps {
   onClose: () => void;
 }
 
-export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPickerProps) {
+export function DifficultyPicker({
+  visible,
+  onSelect,
+  onClose,
+}: DifficultyPickerProps) {
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.overlay}>
-        <View style={styles.sheet}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>CHOOSE DIFFICULTY</Text>
+    <Modal visible={visible} transparent animationType="fade">
+      <LinearGradient
+        colors={["rgba(4,8,15,0.95)", "rgba(4,8,15,0.98)"]}
+        style={styles.overlay}
+      >
+        <View style={styles.content}>
+          <Animated.View
+            entering={FadeIn.delay(100).duration(400)}
+            style={styles.iconWrap}
+          >
+            <MarkX size={48} />
+          </Animated.View>
 
-          <View style={styles.options}>
-            {difficulties.map((d) => (
-              <Pressable
-                key={d.key}
-                style={styles.option}
-                onPress={() => {
-                  onButtonPress();
-                  onSelect(d.key);
-                }}
-              >
-                <View style={[styles.dot, { backgroundColor: d.color }]} />
-                <View style={styles.optionText}>
-                  <Text style={styles.optionLabel}>{d.label}</Text>
-                  <Text style={styles.optionDesc}>{d.desc}</Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
+          <Animated.View entering={FadeIn.delay(200).duration(400)}>
+            <Text style={styles.title}>CHOOSE YOUR</Text>
+            <Text style={styles.titleAccent}>CHALLENGE</Text>
+          </Animated.View>
 
-          <Pressable style={styles.cancelBtn} onPress={() => { onButtonPress(); onClose(); }}>
-            <Text style={styles.cancelText}>Cancel</Text>
-          </Pressable>
+          <Animated.View
+            entering={FadeInDown.delay(400).duration(500)}
+            style={styles.buttons}
+          >
+            <View style={styles.btnRow}>
+              <GameButton
+                title="EASY"
+                onPress={() => onSelect("easy")}
+                variant="secondary"
+              />
+              <Text style={styles.desc}>Random moves</Text>
+            </View>
+            <View style={styles.btnRow}>
+              <GameButton
+                title="MEDIUM"
+                onPress={() => onSelect("medium")}
+              />
+              <Text style={styles.desc}>Smart half the time</Text>
+            </View>
+            <View style={styles.btnRow}>
+              <GameButton
+                title="HARD"
+                onPress={() => onSelect("hard")}
+              />
+              <Text style={styles.desc}>Unbeatable</Text>
+            </View>
+          </Animated.View>
+
+          <Animated.View entering={FadeIn.delay(600).duration(300)}>
+            <Pressable
+              style={styles.cancelBtn}
+              onPress={() => {
+                onButtonPress();
+                onClose();
+              }}
+            >
+              <Text style={styles.cancelText}>BACK</Text>
+            </Pressable>
+          </Animated.View>
         </View>
-      </View>
+      </LinearGradient>
     </Modal>
   );
 }
@@ -56,73 +85,58 @@ export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPicke
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
-    justifyContent: 'flex-end',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  sheet: {
-    backgroundColor: '#0a1520',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    paddingBottom: 48,
+  content: {
+    alignItems: "center",
+    paddingHorizontal: 40,
+    width: "100%",
   },
-  handle: {
-    width: 36,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: 'rgba(171, 172, 185, 0.3)',
-    alignSelf: 'center',
+  iconWrap: {
     marginBottom: 20,
   },
   title: {
-    fontFamily: 'TitilliumWeb_900Black',
+    fontFamily: "TitilliumWeb_700Bold",
     fontSize: 14,
-    letterSpacing: 3,
-    color: 'rgba(171, 172, 185, 0.6)',
-    textAlign: 'center',
-    marginBottom: 20,
+    color: "rgba(171, 172, 185, 0.5)",
+    letterSpacing: 6,
+    textAlign: "center",
   },
-  options: {
-    gap: 10,
+  titleAccent: {
+    fontFamily: "TitilliumWeb_900Black",
+    fontSize: 32,
+    color: "#FEFDFB",
+    letterSpacing: 4,
+    textAlign: "center",
+    marginBottom: 40,
+    textShadowColor: "rgba(247, 142, 30, 0.3)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 20,
   },
-  option: {
-    backgroundColor: 'rgba(12, 30, 54, 0.35)',
-    borderRadius: 14,
-    padding: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(171, 172, 185, 0.12)',
+  buttons: {
+    width: "100%",
+    gap: 16,
+    marginBottom: 32,
   },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+  btnRow: {
+    alignItems: "center",
+    gap: 6,
   },
-  optionText: {
-    flex: 1,
-  },
-  optionLabel: {
-    fontFamily: 'TitilliumWeb_700Bold',
-    fontSize: 16,
-    color: '#FEFDFB',
-  },
-  optionDesc: {
-    fontFamily: 'TitilliumWeb_400Regular',
+  desc: {
+    fontFamily: "TitilliumWeb_400Regular",
     fontSize: 12,
-    color: 'rgba(171, 172, 185, 0.6)',
-    marginTop: 2,
+    color: "rgba(171, 172, 185, 0.4)",
+    letterSpacing: 1,
   },
   cancelBtn: {
-    marginTop: 16,
-    paddingVertical: 10,
-    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
   },
   cancelText: {
-    fontFamily: 'TitilliumWeb_600SemiBold',
-    color: 'rgba(171, 172, 185, 0.5)',
+    fontFamily: "TitilliumWeb_700Bold",
     fontSize: 14,
+    color: "rgba(171, 172, 185, 0.4)",
+    letterSpacing: 3,
   },
 });
