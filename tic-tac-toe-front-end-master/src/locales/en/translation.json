@@ -1,0 +1,50 @@
+{
+    "pageNotFound": {
+        "title": "Page Not Found",
+        "content": "Page Not Found",
+        "page not found": "Page Not Found",
+        "reload page": "Reload Page"
+    },
+    "home": {
+        "play game": "PLAY GAME"
+    },
+    "gameList": {
+        "game list": "GAME LIST",
+        "new game": "NEW GAME",
+        "host": "Host",
+        "id": "ID",
+        "challenger": "Challenger",
+        "end": "End",
+        "turn": "Turn",
+        "view": "View",
+        "play now": "Play Now"
+    },
+    "create new game": {
+        "new game": "New Game",
+        "play with bot": "Play with Bot",
+        "play with player":"Play with Player",
+        "challenger": "Challenger",
+        "create new game": "Create New Game",
+        "fail to create new game": "Fail to create new game",
+        "game is creating": "Game is creating. Go to game list",
+        "your game id": "Your game id: ",
+        "require player": "Require Player"
+    },
+    "confirm": {
+        "execute move at position": "Execute Move at Position ",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "game closed successfully": "Game closed successfully ",
+        "failed to close the game": "Failed to close the game",
+        "Are you sure to close game": "Are you sure to close game?"
+    },
+    "game": {
+        "move successful": "Move successful",
+        "move failed": "Move failed"
+    },
+    "loading": "Loading...",
+    "no game found": "No Game Found",
+    "require login": "Require Login",
+    "turn": "Turn",
+    "winner": "winner"
+}

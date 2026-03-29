@@ -6,13 +6,12 @@ import Animated, {
   withSpring,
   FadeInDown,
 } from 'react-native-reanimated';
-import { colors } from '../constants/theme';
 import { onButtonPress } from '../lib/feedback';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface ModeCardProps {
-  icon: string;
+  icon: React.ReactNode;
   accentColor: string;
   title: string;
   subtitle: string;
@@ -55,7 +54,7 @@ export function ModeCard({
         <View style={[styles.accent, { backgroundColor: accentColor }]} />
 
         <View style={styles.iconWrap}>
-          <Text style={styles.icon}>{icon}</Text>
+          {icon}
         </View>
         <View style={styles.textWrap}>
           <Text style={styles.title}>{title}</Text>
@@ -95,12 +94,9 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  icon: {
-    fontSize: 20,
   },
   textWrap: {
     flex: 1,

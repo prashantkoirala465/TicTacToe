@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 14,
-    fontWeight: '900',
     letterSpacing: 3,
     color: 'rgba(171, 172, 185, 0.6)',
     textAlign: 'center',
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionLabel: {
+    fontFamily: 'TitilliumWeb_700Bold',
     fontSize: 16,
-    fontWeight: '800',
     color: '#FEFDFB',
   },
   optionDesc: {
+    fontFamily: 'TitilliumWeb_400Regular',
     fontSize: 12,
-    fontWeight: '500',
     color: 'rgba(171, 172, 185, 0.6)',
     marginTop: 2,
   },
@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cancelText: {
+    fontFamily: 'TitilliumWeb_600SemiBold',
     color: 'rgba(171, 172, 185, 0.5)',
     fontSize: 14,
-    fontWeight: '600',
   },
 });

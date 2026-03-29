@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   code: {
+    fontFamily: 'TitilliumWeb_900Black',
     fontSize: 48,
-    fontWeight: '900',
     color: colors.textWhite,
     letterSpacing: 8,
     marginBottom: spacing.sm,
@@ -180,9 +180,9 @@ const styles = StyleSheet.create({
     borderRadius: radii.badge,
   },
   shareText: {
+    fontFamily: 'TitilliumWeb_700Bold',
     color: colors.textWhite,
     fontSize: 16,
-    fontWeight: '700',
   },
   waitingArea: {
     flexDirection: 'row',
@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   backText: {
+    fontFamily: 'TitilliumWeb_600SemiBold',
     color: colors.textGray,
     fontSize: 15,
-    fontWeight: '600',
   },
 });

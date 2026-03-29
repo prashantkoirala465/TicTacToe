@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   backText: {
+    fontFamily: 'TitilliumWeb_600SemiBold',
     color: colors.textGray,
     fontSize: 15,
-    fontWeight: '600',
   },
 });
