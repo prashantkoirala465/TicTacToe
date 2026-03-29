@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
   FadeInDown,
 } from 'react-native-reanimated';
-import { colors, spacing } from '../constants/theme';
+import { colors } from '../constants/theme';
 import { onButtonPress } from '../lib/feedback';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -51,18 +51,18 @@ export function ModeCard({
           onPress();
         }}
       >
-        {/* Accent line on left */}
-        <View style={[styles.accentLine, { backgroundColor: accentColor }]} />
+        {/* Left accent */}
+        <View style={[styles.accent, { backgroundColor: accentColor }]} />
 
         <View style={styles.iconWrap}>
           <Text style={styles.icon}>{icon}</Text>
         </View>
-        <View style={styles.textContainer}>
+        <View style={styles.textWrap}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <View style={[styles.arrow, { borderColor: accentColor }]}>
-          <Text style={[styles.arrowText, { color: accentColor }]}>›</Text>
+        <View style={[styles.arrowBadge, { borderColor: accentColor }]}>
+          <Text style={[styles.arrow, { color: accentColor }]}>›</Text>
         </View>
       </AnimatedPressable>
     </Animated.View>
@@ -71,63 +71,62 @@ export function ModeCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'rgba(58, 39, 140, 0.35)',
-    borderRadius: 14,
-    paddingVertical: 18,
+    backgroundColor: 'rgba(58, 39, 140, 0.3)',
+    borderRadius: 12,
+    paddingVertical: 16,
     paddingHorizontal: 18,
-    paddingLeft: 22,
+    paddingLeft: 24,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
     borderWidth: 1,
-    borderColor: 'rgba(171, 172, 185, 0.15)',
+    borderColor: 'rgba(123, 107, 196, 0.15)',
     overflow: 'hidden',
   },
-  accentLine: {
+  accent: {
     position: 'absolute',
     left: 0,
-    top: 8,
-    bottom: 8,
+    top: 10,
+    bottom: 10,
     width: 3,
     borderRadius: 2,
   },
   iconWrap: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    fontSize: 22,
+    fontSize: 20,
   },
-  textContainer: {
+  textWrap: {
     flex: 1,
   },
   title: {
+    fontFamily: 'TitilliumWeb-Bold',
     fontSize: 16,
-    fontWeight: '800',
     color: '#FEFDFB',
-    letterSpacing: 0.3,
   },
   subtitle: {
+    fontFamily: 'TitilliumWeb-Regular',
     fontSize: 12,
-    fontWeight: '500',
-    color: 'rgba(171, 172, 185, 0.7)',
-    marginTop: 2,
+    color: 'rgba(171, 172, 185, 0.6)',
+    marginTop: 1,
   },
-  arrow: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
+  arrowBadge: {
+    width: 26,
+    height: 26,
+    borderRadius: 7,
     borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  arrowText: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginTop: -2,
+  arrow: {
+    fontFamily: 'TitilliumWeb-Bold',
+    fontSize: 16,
+    marginTop: -1,
   },
 });

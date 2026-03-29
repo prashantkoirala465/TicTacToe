@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GameBackground } from '../../src/components/GameBackground';
 import { Board } from '../../src/components/Board';
 import { PlayerBar } from '../../src/components/PlayerBar';
 import { ScoreBar } from '../../src/components/ScoreBar';
@@ -12,7 +12,6 @@ import { DifficultyPicker } from '../../src/components/DifficultyPicker';
 import { useGameStore, type Difficulty } from '../../src/store/game-store';
 import { getAiMove } from '../../src/utils/ai';
 import { onCellTap, onWin, onDraw } from '../../src/lib/feedback';
-import { colors, spacing } from '../../src/constants/theme';
 
 export default function AiGameScreen() {
   const router = useRouter();
@@ -30,7 +29,6 @@ export default function AiGameScreen() {
   const [showPicker, setShowPicker] = useState(true);
   const [aiThinking, setAiThinking] = useState(false);
 
-  // AI plays as O
   useEffect(() => {
     if (currentPlayer === 'O' && !winner && !showPicker) {
       setAiThinking(true);
@@ -46,36 +44,21 @@ export default function AiGameScreen() {
   }, [currentPlayer, winner, showPicker, board, difficulty, makeMove]);
 
   useEffect(() => {
-    if (winner === 'draw') {
-      onDraw();
-    } else if (winner) {
-      onWin();
-    }
+    if (winner === 'draw') onDraw();
+    else if (winner) onWin();
   }, [winner]);
 
   const handleCellPress = useCallback(
     (index: number) => {
       if (currentPlayer !== 'X' || aiThinking) return;
       const moved = makeMove(index);
-      if (moved) {
-        onCellTap();
-      }
+      if (moved) onCellTap();
     },
     [makeMove, currentPlayer, aiThinking],
   );
 
-  const handleDifficultySelect = (d: Difficulty) => {
-    setDifficulty(d);
-    setShowPicker(false);
-    resetBoard();
-  };
-
-  const handlePlayAgain = () => {
-    resetBoard();
-  };
-
   return (
-    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+    <GameBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <PlayerBar
@@ -84,7 +67,6 @@ export default function AiGameScreen() {
             playerXName="You"
             playerOName="Computer"
           />
-
           <View
             onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
             style={styles.boardContainer}
@@ -96,14 +78,13 @@ export default function AiGameScreen() {
             />
             <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
           </View>
-
           <ScoreBar scores={scores} />
         </View>
       </SafeAreaView>
 
       <DifficultyPicker
         visible={showPicker}
-        onSelect={handleDifficultySelect}
+        onSelect={(d: Difficulty) => { setDifficulty(d); setShowPicker(false); resetBoard(); }}
         onClose={() => router.back()}
       />
 
@@ -112,25 +93,20 @@ export default function AiGameScreen() {
           winner={winner}
           playerXName="You"
           playerOName="Computer"
-          onPlayAgain={handlePlayAgain}
+          onPlayAgain={resetBoard}
           onExit={() => router.back()}
         />
       )}
-    </LinearGradient>
+    </GameBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   content: {
     flex: 1,
-    paddingHorizontal: spacing.xxl,
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
-  boardContainer: {
-    position: 'relative',
-    marginBottom: spacing.xxl,
-  },
+  boardContainer: { position: 'relative' },
 });

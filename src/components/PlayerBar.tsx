@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MarkX } from './MarkX';
 import { MarkO } from './MarkO';
-import { colors, spacing } from '../constants/theme';
+import { colors } from '../constants/theme';
 import type { Mark } from '../utils/game-engine';
 
 interface PlayerBarProps {
@@ -17,85 +17,91 @@ export function PlayerBar({ currentPlayer, scores, playerXName, playerOName }: P
 
   return (
     <View style={styles.wrapper}>
+      {/* Player row */}
+      <View style={styles.row}>
+        {/* Player X */}
+        <View style={[styles.card, isXTurn && { borderColor: colors.xPrimary, backgroundColor: 'rgba(247, 142, 30, 0.08)' }]}>
+          <MarkX size={26} />
+          <View style={styles.info}>
+            <Text style={styles.name}>{playerXName}</Text>
+            <Text style={[styles.score, { color: colors.xPrimary }]}>{scores.x}</Text>
+          </View>
+        </View>
+
+        <View style={styles.center}>
+          <Text style={styles.vs}>VS</Text>
+        </View>
+
+        {/* Player O */}
+        <View style={[styles.card, !isXTurn && { borderColor: colors.oPrimary, backgroundColor: 'rgba(69, 139, 188, 0.08)' }]}>
+          <View style={[styles.info, { alignItems: 'flex-end' }]}>
+            <Text style={styles.name}>{playerOName}</Text>
+            <Text style={[styles.score, { color: colors.oPrimary }]}>{scores.o}</Text>
+          </View>
+          <MarkO size={26} />
+        </View>
+      </View>
+
       {/* Turn indicator */}
       <Text style={[styles.turnText, { color: isXTurn ? colors.xPrimary : colors.oPrimary }]}>
         {isXTurn ? playerXName : playerOName}'s Turn
       </Text>
-
-      {/* Player row */}
-      <View style={styles.row}>
-        {/* Player X */}
-        <View style={[styles.playerCard, isXTurn && styles.activeCard, isXTurn && { borderColor: colors.xPrimary }]}>
-          <MarkX size={28} />
-          <View>
-            <Text style={styles.playerName}>{playerXName}</Text>
-            <Text style={[styles.playerScore, { color: colors.xPrimary }]}>{scores.x}</Text>
-          </View>
-        </View>
-
-        <Text style={styles.vs}>VS</Text>
-
-        {/* Player O */}
-        <View style={[styles.playerCard, !isXTurn && styles.activeCard, !isXTurn && { borderColor: colors.oPrimary }]}>
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.playerName}>{playerOName}</Text>
-            <Text style={[styles.playerScore, { color: colors.oPrimary }]}>{scores.o}</Text>
-          </View>
-          <MarkO size={28} />
-        </View>
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: spacing.xl,
-  },
-  turnText: {
-    fontSize: 18,
-    fontWeight: '900',
-    letterSpacing: 2,
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    marginBottom: spacing.lg,
-    textShadowColor: 'rgba(0,0,0,0.4)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
+    marginBottom: 16,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: 8,
+    marginBottom: 10,
   },
-  playerCard: {
+  card: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
-    backgroundColor: 'rgba(58, 39, 140, 0.3)',
-    borderRadius: 12,
+    gap: 10,
+    backgroundColor: 'rgba(58, 39, 140, 0.25)',
+    borderRadius: 10,
     paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     borderWidth: 1.5,
     borderColor: 'transparent',
   },
-  activeCard: {
-    backgroundColor: 'rgba(58, 39, 140, 0.55)',
+  info: {
+    flex: 1,
   },
-  playerName: {
+  name: {
+    fontFamily: 'TitilliumWeb-Bold',
     fontSize: 13,
-    fontWeight: '700',
-    color: colors.textWhite,
+    color: '#FEFDFB',
   },
-  playerScore: {
-    fontSize: 20,
-    fontWeight: '900',
+  score: {
+    fontFamily: 'TitilliumWeb-Black',
+    fontSize: 22,
+  },
+  center: {
+    width: 30,
+    alignItems: 'center',
   },
   vs: {
-    fontSize: 12,
-    fontWeight: '900',
-    color: 'rgba(171, 172, 185, 0.5)',
-    letterSpacing: 1,
+    fontFamily: 'TitilliumWeb-Black',
+    fontSize: 11,
+    color: 'rgba(171, 172, 185, 0.35)',
+    letterSpacing: 2,
+  },
+  turnText: {
+    fontFamily: 'TitilliumWeb-Black',
+    fontSize: 16,
+    letterSpacing: 2,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
 });

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GameBackground } from '../../src/components/GameBackground';
 import { Board } from '../../src/components/Board';
 import { PlayerBar } from '../../src/components/PlayerBar';
 import { ScoreBar } from '../../src/components/ScoreBar';
@@ -10,7 +10,6 @@ import { WinLine } from '../../src/components/WinLine';
 import { GameOverOverlay } from '../../src/components/GameOverOverlay';
 import { useGameStore } from '../../src/store/game-store';
 import { onCellTap, onWin, onDraw } from '../../src/lib/feedback';
-import { colors, spacing } from '../../src/constants/theme';
 
 export default function LocalGameScreen() {
   const router = useRouter();
@@ -25,25 +24,20 @@ export default function LocalGameScreen() {
   const [boardSize, setBoardSize] = useState(0);
 
   useEffect(() => {
-    if (winner === 'draw') {
-      onDraw();
-    } else if (winner) {
-      onWin();
-    }
+    if (winner === 'draw') onDraw();
+    else if (winner) onWin();
   }, [winner]);
 
   const handleCellPress = useCallback(
     (index: number) => {
       const moved = makeMove(index);
-      if (moved) {
-        onCellTap();
-      }
+      if (moved) onCellTap();
     },
     [makeMove],
   );
 
   return (
-    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+    <GameBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <PlayerBar
@@ -57,11 +51,7 @@ export default function LocalGameScreen() {
             onLayout={(e) => setBoardSize(e.nativeEvent.layout.width)}
             style={styles.boardContainer}
           >
-            <Board
-              board={board}
-              onCellPress={handleCellPress}
-              disabled={!!winner}
-            />
+            <Board board={board} onCellPress={handleCellPress} disabled={!!winner} />
             <WinLine line={winLine} boardSize={boardSize} winner={winner === 'draw' ? null : winner} />
           </View>
 
@@ -78,7 +68,7 @@ export default function LocalGameScreen() {
           onExit={() => router.back()}
         />
       )}
-    </LinearGradient>
+    </GameBackground>
   );
 }
 
@@ -88,11 +78,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: spacing.xxl,
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
   boardContainer: {
     position: 'relative',
-    marginBottom: spacing.xxl,
   },
 });

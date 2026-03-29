@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-nati
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GameBackground } from '../../src/components/GameBackground';
 import { supabase } from '../../src/lib/supabase';
 import { RoomCodeInput } from '../../src/components/RoomCodeInput';
 import { useGameStore } from '../../src/store/game-store';
@@ -57,7 +57,7 @@ export default function JoinRoomScreen() {
   };
 
   return (
-    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+    <GameBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <Animated.View entering={FadeIn.duration(200)}>
@@ -93,7 +93,7 @@ export default function JoinRoomScreen() {
           </Pressable>
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </GameBackground>
   );
 }
 

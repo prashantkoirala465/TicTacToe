@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, spacing } from '../constants/theme';
+import { colors } from '../constants/theme';
 
 interface ScoreBarProps {
   scores: { x: number; o: number; draws: number };
@@ -11,17 +11,17 @@ export function ScoreBar({ scores }: ScoreBarProps) {
     <View style={styles.container}>
       <View style={styles.stat}>
         <Text style={[styles.value, { color: colors.xPrimary }]}>{scores.x}</Text>
-        <Text style={[styles.label, { color: colors.xPrimary }]}>X WINS</Text>
+        <Text style={[styles.label, { color: 'rgba(247, 142, 30, 0.6)' }]}>X WINS</Text>
       </View>
       <View style={styles.divider} />
       <View style={styles.stat}>
-        <Text style={[styles.value, { color: 'rgba(171, 172, 185, 0.7)' }]}>{scores.draws}</Text>
+        <Text style={[styles.value, { color: 'rgba(171, 172, 185, 0.6)' }]}>{scores.draws}</Text>
         <Text style={styles.label}>DRAWS</Text>
       </View>
       <View style={styles.divider} />
       <View style={styles.stat}>
         <Text style={[styles.value, { color: colors.oPrimary }]}>{scores.o}</Text>
-        <Text style={[styles.label, { color: colors.oPrimary }]}>O WINS</Text>
+        <Text style={[styles.label, { color: 'rgba(69, 139, 188, 0.6)' }]}>O WINS</Text>
       </View>
     </View>
   );
@@ -32,35 +32,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: 'rgba(58, 39, 140, 0.3)',
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: spacing.md,
+    backgroundColor: 'rgba(58, 39, 140, 0.25)',
+    borderRadius: 12,
+    paddingVertical: 14,
     borderWidth: 1,
-    borderColor: 'rgba(171, 172, 185, 0.15)',
-    marginTop: spacing.xl,
+    borderColor: 'rgba(123, 107, 196, 0.12)',
+    marginTop: 16,
   },
   stat: {
     alignItems: 'center',
     flex: 1,
   },
   value: {
-    fontSize: 28,
-    fontWeight: '900',
+    fontFamily: 'TitilliumWeb-Black',
+    fontSize: 26,
     textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   label: {
+    fontFamily: 'TitilliumWeb-Bold',
     fontSize: 9,
-    fontWeight: '800',
     letterSpacing: 1.5,
-    color: 'rgba(171, 172, 185, 0.5)',
-    marginTop: 2,
+    color: 'rgba(171, 172, 185, 0.4)',
+    marginTop: 1,
   },
   divider: {
     width: 1,
-    height: 30,
-    backgroundColor: 'rgba(171, 172, 185, 0.15)',
+    height: 28,
+    backgroundColor: 'rgba(123, 107, 196, 0.12)',
   },
 });

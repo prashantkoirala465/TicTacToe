@@ -4,6 +4,8 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { GameBackground } from '../../src/components/GameBackground';
+import { GameButton } from '../../src/components/GameButton';
 import { supabase, generateRoomCode } from '../../src/lib/supabase';
 import { useOnlineGame } from '../../src/hooks/useOnlineGame';
 import { useGameStore } from '../../src/store/game-store';
@@ -75,7 +77,7 @@ export default function CreateRoomScreen() {
   };
 
   return (
-    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+    <GameBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <Animated.View entering={FadeIn.duration(200)} style={styles.header}>
@@ -123,7 +125,7 @@ export default function CreateRoomScreen() {
           </Pressable>
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </GameBackground>
   );
 }
 

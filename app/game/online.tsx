@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GameBackground } from '../../src/components/GameBackground';
 import { Board } from '../../src/components/Board';
 import { PlayerBar } from '../../src/components/PlayerBar';
 import { ScoreBar } from '../../src/components/ScoreBar';
@@ -82,7 +82,7 @@ export default function OnlineGameScreen() {
   const isMyTurn = currentPlayer === myMark;
 
   return (
-    <LinearGradient colors={colors.bgGradient} style={{ flex: 1 }}>
+    <GameBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           {status === 'disconnected' ? null : (
@@ -125,7 +125,7 @@ export default function OnlineGameScreen() {
           onExit={() => router.dismissAll()}
         />
       )}
-    </LinearGradient>
+    </GameBackground>
   );
 }
 
@@ -135,12 +135,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: spacing.xxl,
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
   boardContainer: {
     position: 'relative',
-    marginBottom: spacing.xxl,
+    marginBottom: 0,
   },
   waitingText: {
     ...typography.caption,
