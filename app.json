@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "TicTacToe",
-    "slug": "tictactoe",
-    "scheme": "tictactoe",
+    "name": "Tic",
+    "slug": "tic",
+    "scheme": "tic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,9 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tic.app",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {

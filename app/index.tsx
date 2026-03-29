@@ -79,7 +79,7 @@ export default function HomeScreen() {
                     )
             }
             delay={160}
-            style={isSupabaseConfigured ? undefined : { opacity: 0.4 }}
+            dimmed={!isSupabaseConfigured}
           />
           <ModeCard
             icon="🔗"
@@ -100,7 +100,7 @@ export default function HomeScreen() {
                     )
             }
             delay={240}
-            style={isSupabaseConfigured ? undefined : { opacity: 0.4 }}
+            dimmed={!isSupabaseConfigured}
           />
         </View>
       </View>

@@ -33,10 +33,7 @@ export function GameOverOverlay({
 
   return (
     <Animated.View entering={FadeIn.duration(200)} style={styles.overlay}>
-      <Animated.View
-        entering={FadeIn.delay(100).springify().damping(12)}
-        style={styles.card}
-      >
+      <View style={styles.card}>
         <Text style={[styles.title, { color: getColor() }]}>
           {getMessage()}
         </Text>
@@ -60,7 +57,7 @@ export function GameOverOverlay({
         >
           <Text style={styles.exitText}>Back to Menu</Text>
         </Pressable>
-      </Animated.View>
+      </View>
     </Animated.View>
   );
 }
