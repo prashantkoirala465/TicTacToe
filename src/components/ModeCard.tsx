@@ -6,14 +6,14 @@ import Animated, {
   withSpring,
   FadeInDown,
 } from 'react-native-reanimated';
-import { colors, radii, spacing, typography } from '../constants/theme';
+import { colors, spacing } from '../constants/theme';
 import { onButtonPress } from '../lib/feedback';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface ModeCardProps {
   icon: string;
-  iconBgColor: string;
+  accentColor: string;
   title: string;
   subtitle: string;
   onPress: () => void;
@@ -23,7 +23,7 @@ interface ModeCardProps {
 
 export function ModeCard({
   icon,
-  iconBgColor,
+  accentColor,
   title,
   subtitle,
   onPress,
@@ -39,9 +39,9 @@ export function ModeCard({
   return (
     <Animated.View entering={FadeInDown.delay(delay).springify().damping(14)}>
       <AnimatedPressable
-        style={[styles.card, animatedStyle, dimmed && { opacity: 0.35 }]}
+        style={[styles.card, animatedStyle, dimmed && { opacity: 0.3 }]}
         onPressIn={() => {
-          scale.value = withSpring(0.97, { damping: 15, stiffness: 300 });
+          scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
         }}
         onPressOut={() => {
           scale.value = withSpring(1, { damping: 15, stiffness: 300 });
@@ -51,14 +51,19 @@ export function ModeCard({
           onPress();
         }}
       >
-        <View style={[styles.iconContainer, { backgroundColor: iconBgColor }]}>
+        {/* Accent line on left */}
+        <View style={[styles.accentLine, { backgroundColor: accentColor }]} />
+
+        <View style={styles.iconWrap}>
           <Text style={styles.icon}>{icon}</Text>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <Text style={styles.chevron}>&rsaquo;</Text>
+        <View style={[styles.arrow, { borderColor: accentColor }]}>
+          <Text style={[styles.arrowText, { color: accentColor }]}>›</Text>
+        </View>
       </AnimatedPressable>
     </Animated.View>
   );
@@ -66,19 +71,31 @@ export function ModeCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.bgCard,
-    borderRadius: radii.card,
-    padding: spacing.xl,
+    backgroundColor: 'rgba(58, 39, 140, 0.35)',
+    borderRadius: 14,
+    paddingVertical: 18,
+    paddingHorizontal: 18,
+    paddingLeft: 22,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.lg,
+    gap: 14,
     borderWidth: 1,
-    borderColor: colors.bgCardBorder,
+    borderColor: 'rgba(171, 172, 185, 0.15)',
+    overflow: 'hidden',
   },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: radii.icon,
+  accentLine: {
+    position: 'absolute',
+    left: 0,
+    top: 8,
+    bottom: 8,
+    width: 3,
+    borderRadius: 2,
+  },
+  iconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -89,17 +106,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    ...typography.body,
-    color: colors.textWhite,
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#FEFDFB',
+    letterSpacing: 0.3,
   },
   subtitle: {
-    ...typography.caption,
-    color: colors.textGray,
+    fontSize: 12,
+    fontWeight: '500',
+    color: 'rgba(171, 172, 185, 0.7)',
     marginTop: 2,
   },
-  chevron: {
-    fontSize: 20,
-    color: colors.textGray,
+  arrow: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  arrowText: {
+    fontSize: 18,
     fontWeight: '700',
+    marginTop: -2,
   },
 });

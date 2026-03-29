@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, Modal } from 'react-native';
-import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
-import { colors, radii, spacing, typography } from '../constants/theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { colors, spacing } from '../constants/theme';
 import { onButtonPress } from '../lib/feedback';
 import type { Difficulty } from '../store/game-store';
 
-const difficulties: { key: Difficulty; label: string; description: string }[] = [
-  { key: 'easy', label: 'Easy', description: 'Random moves — good for beginners' },
-  { key: 'medium', label: 'Medium', description: 'Mix of smart and random moves' },
-  { key: 'hard', label: 'Hard', description: 'Unbeatable — can you get a draw?' },
+const difficulties: { key: Difficulty; label: string; desc: string; color: string }[] = [
+  { key: 'easy', label: 'Easy', desc: 'Random moves — good for warmups', color: '#B1D94D' },
+  { key: 'medium', label: 'Medium', desc: 'Smart half the time — a fair fight', color: colors.xPrimary },
+  { key: 'hard', label: 'Hard', desc: 'Unbeatable — can you draw?', color: '#BA4300' },
 ];
 
 interface DifficultyPickerProps {
@@ -19,13 +19,12 @@ interface DifficultyPickerProps {
 
 export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPickerProps) {
   return (
-    <Modal visible={visible} transparent animationType="fade">
-      <Animated.View entering={FadeIn.duration(200)} style={styles.overlay}>
-        <Animated.View
-          entering={FadeInUp.delay(100).springify().damping(14)}
-          style={styles.sheet}
-        >
-          <Text style={styles.title}>Choose Difficulty</Text>
+    <Modal visible={visible} transparent animationType="slide">
+      <View style={styles.overlay}>
+        <View style={styles.sheet}>
+          <View style={styles.handle} />
+          <Text style={styles.title}>CHOOSE DIFFICULTY</Text>
+
           <View style={styles.options}>
             {difficulties.map((d) => (
               <Pressable
@@ -36,16 +35,20 @@ export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPicke
                   onSelect(d.key);
                 }}
               >
-                <Text style={styles.optionLabel}>{d.label}</Text>
-                <Text style={styles.optionDesc}>{d.description}</Text>
+                <View style={[styles.dot, { backgroundColor: d.color }]} />
+                <View style={styles.optionText}>
+                  <Text style={styles.optionLabel}>{d.label}</Text>
+                  <Text style={styles.optionDesc}>{d.desc}</Text>
+                </View>
               </Pressable>
             ))}
           </View>
-          <Pressable style={styles.cancelButton} onPress={() => { onButtonPress(); onClose(); }}>
+
+          <Pressable style={styles.cancelBtn} onPress={() => { onButtonPress(); onClose(); }}>
             <Text style={styles.cancelText}>Cancel</Text>
           </Pressable>
-        </Animated.View>
-      </Animated.View>
+        </View>
+      </View>
     </Modal>
   );
 }
@@ -53,49 +56,73 @@ export function DifficultyPicker({ visible, onSelect, onClose }: DifficultyPicke
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
     justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: '#1a1055',
+    backgroundColor: '#130d3a',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    padding: spacing.xxl,
+    paddingHorizontal: 24,
+    paddingTop: 12,
     paddingBottom: 48,
   },
+  handle: {
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(171, 172, 185, 0.3)',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
   title: {
-    ...typography.title,
-    color: colors.textWhite,
+    fontSize: 14,
+    fontWeight: '900',
+    letterSpacing: 3,
+    color: 'rgba(171, 172, 185, 0.6)',
     textAlign: 'center',
-    marginBottom: spacing.xxl,
+    marginBottom: 20,
   },
   options: {
-    gap: spacing.md,
+    gap: 10,
   },
   option: {
-    backgroundColor: colors.bgCard,
-    borderRadius: radii.card,
-    padding: spacing.xl,
+    backgroundColor: 'rgba(58, 39, 140, 0.35)',
+    borderRadius: 14,
+    padding: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
     borderWidth: 1,
-    borderColor: colors.bgCardBorder,
+    borderColor: 'rgba(171, 172, 185, 0.12)',
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  optionText: {
+    flex: 1,
   },
   optionLabel: {
-    ...typography.body,
-    color: colors.textWhite,
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#FEFDFB',
   },
   optionDesc: {
-    ...typography.caption,
-    color: colors.textGray,
+    fontSize: 12,
+    fontWeight: '500',
+    color: 'rgba(171, 172, 185, 0.6)',
     marginTop: 2,
   },
-  cancelButton: {
-    marginTop: spacing.lg,
-    paddingVertical: spacing.sm,
+  cancelBtn: {
+    marginTop: 16,
+    paddingVertical: 10,
     alignItems: 'center',
   },
   cancelText: {
-    color: colors.textGray,
-    fontSize: 15,
+    color: 'rgba(171, 172, 185, 0.5)',
+    fontSize: 14,
     fontWeight: '600',
   },
 });

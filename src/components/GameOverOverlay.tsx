@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, radii, spacing } from '../constants/theme';
+import { MarkX } from './MarkX';
+import { MarkO } from './MarkO';
+import { colors } from '../constants/theme';
 import { onButtonPress } from '../lib/feedback';
 import type { Mark } from '../utils/game-engine';
 
@@ -21,49 +23,48 @@ export function GameOverOverlay({
   onPlayAgain,
   onExit,
 }: GameOverOverlayProps) {
-  const getMessage = () => {
-    if (winner === 'draw') return "IT'S A DRAW";
-    const name = winner === 'X' ? playerXName : playerOName;
-    return `${name.toUpperCase()} WINS!`;
-  };
-
-  const getColor = () => {
-    if (winner === 'draw') return colors.textGray;
-    return winner === 'X' ? colors.xPrimary : colors.oPrimary;
-  };
+  const isDraw = winner === 'draw';
+  const winnerName = winner === 'X' ? playerXName : playerOName;
+  const accentColor = winner === 'X' ? colors.xPrimary : winner === 'O' ? colors.oPrimary : colors.textGray;
+  const gradient = winner === 'X' ? colors.xGradient : colors.oGradient;
 
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.overlay}>
       <View style={styles.card}>
-        <Text style={[styles.title, { color: getColor() }]}>
-          {getMessage()}
+        {/* Winner mark */}
+        {!isDraw && (
+          <View style={styles.markContainer}>
+            {winner === 'X' ? <MarkX size={60} /> : <MarkO size={60} />}
+          </View>
+        )}
+
+        <Text style={[styles.label, { color: accentColor }]}>
+          {isDraw ? 'DRAW' : 'WINNER'}
+        </Text>
+
+        <Text style={styles.name}>
+          {isDraw ? "Nobody wins!" : winnerName}
         </Text>
 
         <Pressable
-          style={styles.playAgainButton}
-          onPress={() => {
-            onButtonPress();
-            onPlayAgain();
-          }}
+          style={styles.playAgainBtn}
+          onPress={() => { onButtonPress(); onPlayAgain(); }}
         >
           <LinearGradient
-            colors={colors.xGradient}
+            colors={isDraw ? ['#ABACB9', '#7a7b89'] : [...gradient]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.buttonGradient}
+            style={styles.btnGradient}
           >
-            <Text style={styles.playAgainText}>PLAY AGAIN</Text>
+            <Text style={styles.btnText}>PLAY AGAIN</Text>
           </LinearGradient>
         </Pressable>
 
         <Pressable
-          style={styles.exitButton}
-          onPress={() => {
-            onButtonPress();
-            onExit();
-          }}
+          style={styles.exitBtn}
+          onPress={() => { onButtonPress(); onExit(); }}
         >
-          <Text style={styles.exitText}>BACK TO MENU</Text>
+          <Text style={styles.exitText}>Back to Menu</Text>
         </Pressable>
       </View>
     </Animated.View>
@@ -73,61 +74,74 @@ export function GameOverOverlay({
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
   },
   card: {
-    backgroundColor: colors.bgCard,
-    borderRadius: radii.card,
-    padding: spacing.xxxl,
+    backgroundColor: 'rgba(26, 16, 85, 0.95)',
+    borderRadius: 20,
+    paddingVertical: 36,
+    paddingHorizontal: 40,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.bgCardBorder,
+    borderWidth: 1.5,
+    borderColor: 'rgba(171, 172, 185, 0.2)',
     minWidth: 280,
+    shadowColor: '#3A278C',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.6,
+    shadowRadius: 30,
+    elevation: 20,
   },
-  title: {
-    fontSize: 28,
+  markContainer: {
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 14,
     fontWeight: '900',
-    letterSpacing: 2,
-    marginBottom: spacing.xxl,
-    textShadowColor: 'rgba(0,0,0,0.5)',
+    letterSpacing: 4,
+    marginBottom: 4,
+  },
+  name: {
+    fontSize: 26,
+    fontWeight: '900',
+    color: colors.textWhite,
+    marginBottom: 28,
+    textShadowColor: 'rgba(0,0,0,0.4)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
-  playAgainButton: {
-    borderRadius: radii.badge,
+  playAgainBtn: {
+    borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: spacing.md,
-    shadowColor: colors.xPrimary,
+    marginBottom: 12,
+    shadowColor: '#F78E1E',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.35,
     shadowRadius: 12,
-    elevation: 8,
   },
-  buttonGradient: {
+  btnGradient: {
     paddingVertical: 14,
-    paddingHorizontal: 48,
-    borderRadius: radii.badge,
+    paddingHorizontal: 52,
+    borderRadius: 8,
   },
-  playAgainText: {
-    color: colors.textWhite,
-    fontSize: 16,
+  btnText: {
+    color: '#FFFFFF',
+    fontSize: 15,
     fontWeight: '900',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
     textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
-  exitButton: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.xl,
+  exitBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 20,
   },
   exitText: {
-    color: colors.textGray,
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: 1,
+    color: 'rgba(171, 172, 185, 0.6)',
+    fontSize: 13,
+    fontWeight: '600',
   },
 });

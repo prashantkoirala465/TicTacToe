@@ -1,0 +1,67 @@
+{
+    "name": "tic",
+    "private": true,
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host",
+        "build": "tsc && vite build",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview",
+        "start": "npx serve -s dist -p 5173"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{css,scss,ts,tsx,js,jsx}": [
+            "prettier --write"
+        ]
+    },
+    "dependencies": {
+        "@reduxjs/toolkit": "^1.9.5",
+        "@waxio/waxjs": "1.7.1",
+        "antd": "^5.2.0",
+        "axios": "^1.4.0",
+        "buffer": "^6.0.3",
+        "ethers": "^6.7.1",
+        "fontfaceobserver": "^2.3.0",
+        "i18next": "^23.4.4",
+        "i18next-browser-languagedetector": "^7.1.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-helmet-async": "^1.3.0",
+        "react-i18next": "^13.0.3",
+        "react-redux": "^7.2.9",
+        "react-router-dom": "^6.14.2",
+        "redux-injectors": "2.1.0",
+        "redux-saga": "1.1.3",
+        "styled-components": "^6.0.7"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+        "@types/fontfaceobserver": "^2.1.0",
+        "@types/node": "^20.11.19",
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@types/styled-components": "5.1.20",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "@vitejs/plugin-react": "^4.0.3",
+        "eslint": "^8.45.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.3",
+        "husky": "3.0.0",
+        "lint-staged": "12.4.1",
+        "prettier": "2.6.2",
+        "stylelint": "14.2.0",
+        "stylelint-config-recommended": "6.0.0",
+        "stylelint-config-styled-components": "0.1.1",
+        "stylelint-processor-styled-components": "1.10.0",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5",
+        "vite-tsconfig-paths": "^4.2.0"
+    }
+}

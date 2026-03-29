@@ -4,9 +4,10 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MarkX } from '../src/components/MarkX';
 import { ModeCard } from '../src/components/ModeCard';
 import { useGameStore } from '../src/store/game-store';
-import { colors, spacing, radii } from '../src/constants/theme';
+import { colors, spacing } from '../src/constants/theme';
 import { isSupabaseConfigured } from '../src/lib/supabase';
 
 export default function HomeScreen() {
@@ -31,31 +32,38 @@ export default function HomeScreen() {
             entering={FadeIn.delay(0).springify().damping(12)}
             style={styles.logoArea}
           >
+            <View style={styles.logoMark}>
+              <MarkX size={48} />
+            </View>
             <Text style={styles.appName}>TIC</Text>
-            <Text style={styles.tagline}>THE CLASSIC, PERFECTED.</Text>
+            <View style={styles.taglineRow}>
+              <View style={styles.taglineLine} />
+              <Text style={styles.tagline}>THE CLASSIC, PERFECTED</Text>
+              <View style={styles.taglineLine} />
+            </View>
           </Animated.View>
 
           {/* Mode Cards */}
           <View style={styles.cards}>
             <ModeCard
-              icon="👥"
-              iconBgColor="rgba(247, 142, 30, 0.2)"
+              icon="⚔️"
+              accentColor={colors.xPrimary}
               title="Pass & Play"
               subtitle="Two players, one device"
               onPress={() => startGame('local')}
-              delay={0}
+              delay={100}
             />
             <ModeCard
               icon="🤖"
-              iconBgColor="rgba(69, 139, 188, 0.2)"
+              accentColor={colors.oPrimary}
               title="vs Computer"
               subtitle="Easy, Medium, or Hard"
               onPress={() => startGame('ai')}
-              delay={80}
+              delay={180}
             />
             <ModeCard
               icon="🌐"
-              iconBgColor="rgba(205, 170, 238, 0.2)"
+              accentColor="#CDAAEE"
               title="Create Game"
               subtitle={isSupabaseConfigured ? 'Host a room for a friend' : 'Requires online setup'}
               onPress={
@@ -71,12 +79,12 @@ export default function HomeScreen() {
                         'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
                       )
               }
-              delay={160}
+              delay={260}
               dimmed={!isSupabaseConfigured}
             />
             <ModeCard
               icon="🔗"
-              iconBgColor="rgba(205, 170, 238, 0.2)"
+              accentColor="#CDAAEE"
               title="Join Game"
               subtitle={isSupabaseConfigured ? 'Enter a room code' : 'Requires online setup'}
               onPress={
@@ -92,7 +100,7 @@ export default function HomeScreen() {
                         'To play online, set up Supabase and add your credentials to .env. See .env.example for details.',
                       )
               }
-              delay={240}
+              delay={340}
               dimmed={!isSupabaseConfigured}
             />
           </View>
@@ -111,30 +119,47 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: spacing.xxl,
+    paddingHorizontal: 24,
     justifyContent: 'center',
   },
   logoArea: {
     alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 52,
+  },
+  logoMark: {
+    marginBottom: 8,
+    shadowColor: colors.xPrimary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
   },
   appName: {
-    fontSize: 56,
+    fontSize: 52,
     fontWeight: '900',
-    color: colors.textWhite,
-    letterSpacing: 12,
-    textShadowColor: colors.xPrimary,
+    color: '#FEFDFB',
+    letterSpacing: 16,
+    textShadowColor: 'rgba(247, 142, 30, 0.4)',
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 30,
+    textShadowRadius: 40,
+  },
+  taglineRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
+  taglineLine: {
+    height: 1,
+    width: 28,
+    backgroundColor: 'rgba(171, 172, 185, 0.3)',
   },
   tagline: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '700',
-    color: colors.textGray,
+    color: 'rgba(171, 172, 185, 0.5)',
     letterSpacing: 4,
-    marginTop: spacing.sm,
   },
   cards: {
-    gap: spacing.md,
+    gap: 10,
   },
 });

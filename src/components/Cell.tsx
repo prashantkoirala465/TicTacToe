@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { MarkX } from './MarkX';
 import { MarkO } from './MarkO';
-import { colors, radii } from '../constants/theme';
+import { colors } from '../constants/theme';
 import type { Cell as CellType } from '../utils/game-engine';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -16,15 +16,16 @@ interface CellProps {
   value: CellType;
   onPress: () => void;
   disabled: boolean;
+  size: number;
 }
 
-export function Cell({ value, onPress, disabled }: CellProps) {
+export function Cell({ value, onPress, disabled, size }: CellProps) {
   const markScale = useSharedValue(0);
   const pressScale = useSharedValue(1);
 
   useEffect(() => {
     if (value) {
-      markScale.value = withSpring(1, { damping: 12, stiffness: 180 });
+      markScale.value = withSpring(1, { damping: 10, stiffness: 150 });
     } else {
       markScale.value = 0;
     }
@@ -41,7 +42,7 @@ export function Cell({ value, onPress, disabled }: CellProps) {
 
   const handlePressIn = () => {
     if (!disabled && !value) {
-      pressScale.value = withSpring(0.93, { damping: 15, stiffness: 300 });
+      pressScale.value = withSpring(0.92, { damping: 15, stiffness: 300 });
     }
   };
 
@@ -49,17 +50,25 @@ export function Cell({ value, onPress, disabled }: CellProps) {
     pressScale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
 
-  const getBorderColor = () => {
-    if (value === 'X') return colors.xPrimary;
-    if (value === 'O') return colors.oPrimary;
-    return colors.bgCellBorder;
-  };
+  const borderColor = value === 'X' ? colors.xPrimary
+    : value === 'O' ? colors.oPrimary
+    : 'rgba(171, 172, 185, 0.4)';
+
+  const borderWidth = value ? 3 : 1;
+
+  // Mark fills ~80% of the cell
+  const markSize = Math.floor(size * 0.78);
 
   return (
     <AnimatedPressable
       style={[
         styles.cell,
-        { borderColor: getBorderColor(), borderWidth: value ? 3 : 1 },
+        {
+          width: size,
+          height: size,
+          borderColor,
+          borderWidth,
+        },
         cellStyle,
       ]}
       onPress={onPress}
@@ -67,9 +76,20 @@ export function Cell({ value, onPress, disabled }: CellProps) {
       onPressOut={handlePressOut}
       disabled={disabled || !!value}
     >
+      {/* Inner glow for filled cells */}
+      {value && (
+        <View
+          style={[
+            styles.innerGlow,
+            {
+              shadowColor: value === 'X' ? colors.xPrimary : colors.oPrimary,
+            },
+          ]}
+        />
+      )}
       {value && (
         <Animated.View style={markStyle}>
-          {value === 'X' ? <MarkX size={70} /> : <MarkO size={70} />}
+          {value === 'X' ? <MarkX size={markSize} /> : <MarkO size={markSize} />}
         </Animated.View>
       )}
     </AnimatedPressable>
@@ -78,10 +98,17 @@ export function Cell({ value, onPress, disabled }: CellProps) {
 
 const styles = StyleSheet.create({
   cell: {
-    flex: 1,
-    borderRadius: radii.cell,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.bgCell,
+    backgroundColor: 'rgba(58, 39, 140, 0.3)',
+    overflow: 'hidden',
+  },
+  innerGlow: {
+    ...StyleSheet.absoluteFillObject,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 0,
   },
 });

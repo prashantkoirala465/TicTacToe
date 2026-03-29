@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, radii, typography, spacing } from '../constants/theme';
+import { MarkX } from './MarkX';
+import { MarkO } from './MarkO';
+import { colors, spacing } from '../constants/theme';
 import type { Mark } from '../utils/game-engine';
 
 interface PlayerBarProps {
@@ -11,32 +13,35 @@ interface PlayerBarProps {
 }
 
 export function PlayerBar({ currentPlayer, scores, playerXName, playerOName }: PlayerBarProps) {
+  const isXTurn = currentPlayer === 'X';
+
   return (
-    <View>
-      <View style={styles.turnIndicator}>
-        <Text style={[styles.turnLabel, { color: currentPlayer === 'X' ? colors.xPrimary : colors.oPrimary }]}>
-          {currentPlayer === 'X' ? playerXName : playerOName}'S TURN
-        </Text>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.player}>
-          <View style={[styles.badge, { backgroundColor: 'rgba(247, 142, 30, 0.2)', borderColor: colors.xPrimary }]}>
-            <Text style={[styles.badgeMark, { color: colors.xPrimary }]}>X</Text>
-          </View>
+    <View style={styles.wrapper}>
+      {/* Turn indicator */}
+      <Text style={[styles.turnText, { color: isXTurn ? colors.xPrimary : colors.oPrimary }]}>
+        {isXTurn ? playerXName : playerOName}'s Turn
+      </Text>
+
+      {/* Player row */}
+      <View style={styles.row}>
+        {/* Player X */}
+        <View style={[styles.playerCard, isXTurn && styles.activeCard, isXTurn && { borderColor: colors.xPrimary }]}>
+          <MarkX size={28} />
           <View>
-            <Text style={styles.name}>{playerXName}</Text>
-            <Text style={styles.wins}>{scores.x} wins</Text>
+            <Text style={styles.playerName}>{playerXName}</Text>
+            <Text style={[styles.playerScore, { color: colors.xPrimary }]}>{scores.x}</Text>
           </View>
         </View>
+
         <Text style={styles.vs}>VS</Text>
-        <View style={styles.player}>
+
+        {/* Player O */}
+        <View style={[styles.playerCard, !isXTurn && styles.activeCard, !isXTurn && { borderColor: colors.oPrimary }]}>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.name}>{playerOName}</Text>
-            <Text style={styles.wins}>{scores.o} wins</Text>
+            <Text style={styles.playerName}>{playerOName}</Text>
+            <Text style={[styles.playerScore, { color: colors.oPrimary }]}>{scores.o}</Text>
           </View>
-          <View style={[styles.badge, { backgroundColor: 'rgba(69, 139, 188, 0.2)', borderColor: colors.oPrimary }]}>
-            <Text style={[styles.badgeMark, { color: colors.oPrimary }]}>O</Text>
-          </View>
+          <MarkO size={28} />
         </View>
       </View>
     </View>
@@ -44,49 +49,53 @@ export function PlayerBar({ currentPlayer, scores, playerXName, playerOName }: P
 }
 
 const styles = StyleSheet.create({
-  turnIndicator: {
-    alignItems: 'center',
-    marginBottom: spacing.xxl,
+  wrapper: {
+    marginBottom: spacing.xl,
   },
-  turnLabel: {
-    ...typography.label,
-  },
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.xxl,
-    paddingHorizontal: spacing.sm,
-  },
-  player: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm + 2,
-  },
-  badge: {
-    width: 40,
-    height: 40,
-    borderRadius: radii.badge,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-  },
-  badgeMark: {
-    fontSize: 20,
+  turnText: {
+    fontSize: 18,
     fontWeight: '900',
+    letterSpacing: 2,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    marginBottom: spacing.lg,
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
-  name: {
-    fontSize: 14,
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  playerCard: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    backgroundColor: 'rgba(58, 39, 140, 0.3)',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderWidth: 1.5,
+    borderColor: 'transparent',
+  },
+  activeCard: {
+    backgroundColor: 'rgba(58, 39, 140, 0.55)',
+  },
+  playerName: {
+    fontSize: 13,
     fontWeight: '700',
     color: colors.textWhite,
   },
-  wins: {
-    ...typography.small,
-    color: colors.textGray,
+  playerScore: {
+    fontSize: 20,
+    fontWeight: '900',
   },
   vs: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '900',
-    color: colors.textGray,
+    color: 'rgba(171, 172, 185, 0.5)',
+    letterSpacing: 1,
   },
 });
